@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1> Ceci est une list d'object Ticket</h1>
+
+{% for ticket in ticket_objects %}
+
+<ul>
+    <li>{{ ticket }}</li>
+</ul>
+
+{% endfor %}
+
+{% endblock %}
