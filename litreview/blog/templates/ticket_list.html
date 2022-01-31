@@ -5,10 +5,17 @@
 <h1> Tickets ouvert </h1>
 
 {% for ticket in ticket_objects %}
+    <style>.ticket-picture {max-width: 30%;}</style>  <!--TOO MODIFY-->
 
-{% if ticket.status %}
-<p><h2>{{ ticket }}</h2> par {{ ticket.ticket_author }}</p>
-{% endif %}
+    {% if ticket.status %}
+    <p><h2>{{ ticket }}</h2> par {{ ticket.ticket_author }} à {{ ticket.time_created}}</p>
+            <a href="{{ticket.id}}">Rédiger critique</a>
+            {% if ticket.content_picture %}
+            <div class="post">
+                <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
+            </div>
+        {% endif %}
+    {% endif %}
 
 {% endfor %}
 

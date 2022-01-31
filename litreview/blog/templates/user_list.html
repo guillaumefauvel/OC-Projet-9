@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1> Utilisateurs : </h1>
+
+{% for user in user_objects %}
+
+<p><h2><a href="{% url 'user-page' user.id %}">{{ user.username }}</a></h2></p>
+
+{% endfor %}
+
+{% endblock %}

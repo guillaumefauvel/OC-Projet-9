@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1> Critiques publiées </h1>
+
+{% for review in review_objects %}
+     <!-- TO-DO Lier les tickets au review -->
+
+    <p><h2>{{ review }}</h2> par {{ review.user }} à {{ review.time_created}}</p>
+
+{% endfor %}
+
+{% endblock %}

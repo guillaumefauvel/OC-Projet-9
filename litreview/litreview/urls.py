@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
-import authentication.views
 
-from blog.views import home, ticket_list_view, create_ticket
+import authentication.views
+from blog.views import home, ticket_list_view, create_ticket, create_review, user_list, profile, user_page, review_list_view, ticket_page
 
 urlpatterns = [
 
@@ -47,5 +49,14 @@ urlpatterns = [
 
     path('ticket/creation', create_ticket, name='ticket-creation'),
     path('ticket/list', ticket_list_view, name='ticket-list'),
+    path('ticket/<int:ticket_id>', ticket_page, name='ticket-page'),
 
-]
+    path('review/creation', create_review, name='review-creation'),
+    path('review/list', review_list_view, name='review-list'),
+
+    path('userlist/', user_list, name='user-list'),
+    path('profile/', profile, name='profile'),
+
+    path('user/<int:user_id>', user_page, name='user-page'),
+
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
