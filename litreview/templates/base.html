@@ -2,18 +2,24 @@
 <html>
 
     <head>
-        <title>FotoBlog</title>
+        <title>LitReview</title>
         <link rel="stylesheet" href="{% static 'app.css' %}">
     </head>
 
     <body>
         <div class="sidebar">
-            <h1>FotoBlog</h1>
             {% if user.is_authenticated %}
+                <h1><a href="{% url 'home' %}">LitReview</a></h1>
                 <p>Salut, {{ user }} !</p>
+                <br>
                 <p><a href="{% url 'home' %}">Accueil</a></p>
-                <p><a href="{% url 'password_change' %}">Changer le mot de passe</a></p>
+                <p><a href="{% url 'ticket-list' %}">Voir les tickets ouvert</a></p>
+                <p><a href="{% url 'ticket-creation' %}">Créer un ticket</a></p>
+                <p><a href="">Publier une critique</a></p>
+                <p><a href="">Consulter votre profil</a></p>
                 <p><a href="{% url 'logout' %}">Se déconnecter</a></p>
+            {% else %}
+                <h1>LitReview</h1>
             {% endif %}
         </div>
         <div class="main">

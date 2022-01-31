@@ -85,8 +85,6 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = "authentication.User"
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,6 +124,8 @@ STATICFILES_DIRS = [BASE_DIR.joinpath('static/')]
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "authentication.User"
 
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'

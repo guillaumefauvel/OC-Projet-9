@@ -20,7 +20,7 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
 import authentication.views
 
-from blog.views import home, ticket_list_view
+from blog.views import home, ticket_list_view, create_ticket
 
 urlpatterns = [
 
@@ -33,23 +33,19 @@ urlpatterns = [
 
     path('', LoginView.as_view(
         template_name='authentication/login.html',
-        redirect_authenticated_user=True),
-         name='login'),
+        redirect_authenticated_user=True),name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('change-password/', PasswordChangeView.as_view(
         template_name='authentication/password_change_form.html'),
-         name='password_change'
-         ),
+         name='password_change'),
     path('change-password-done/', PasswordChangeDoneView.as_view(
         template_name='authentication/password_change_done.html'),
-         name='password_change_done'
-    ),
+         name='password_change_done'),
     path('signup/', authentication.views.signup_page, name='signup'),
-    path('profile-photo/upload', authentication.views.upload_profile_photo,
-         name='upload_profile_photo'),
 
     # OTHER
 
-    path('ticket/list', ticket_list_view),
+    path('ticket/creation', create_ticket, name='ticket-creation'),
+    path('ticket/list', ticket_list_view, name='ticket-list'),
 
 ]
