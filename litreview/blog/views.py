@@ -26,8 +26,8 @@ def ticket_list_view(request):
 
 @login_required
 def ticket_page(request, ticket_id):
-    print(ticket_id)
-    ticket = get_object_or_404(User, id=ticket_id)
+
+    ticket = get_object_or_404(Ticket, id=ticket_id)
     return render(request, 'ticket_page.html', context={'ticket_id': ticket})
 
 
