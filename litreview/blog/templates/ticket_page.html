@@ -6,5 +6,11 @@
 
 <p>{{ ticket_id.content_reference }}</p>
 
+<h2>Publier votre critique</h2>
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit" >Publier</button>
+</form>
 
 {% endblock %}

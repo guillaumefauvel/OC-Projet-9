@@ -3,12 +3,49 @@
 {% block content %}
 
 <h1> Profil de {{ guest_id.username }} </h1>
+<b><a href="">S'abonner</a></b>
 
-<a>Mes tickets</a>
+<!--TODO MODIFY-->
+<style>
+.picture {max-width: 15%;}
+.content-item {display: flex; flex-direction: column; align-content: space-around; gap: 20px 20px}
+</style>
+
+
+<h2>Mes tickets</h2>
+<div class="content-item">
+{% if tickets %}
+    {% for ticket in tickets %}
+            {{ ticket }}
+            {% if ticket.content_picture %}
+            <img src="{{ ticket.content_picture.url }}" class="picture">
+            {% endif %}
+            <br>
+
+    {% endfor %}
+{% else %}
+    <i> Je n'ai pas encore ouvert de ticket </i>
+{% endif %}
+</div>
+
+<h2>Mes critiques</h2>
+<div class="content-item">
+{% if reviews %}
+    {% for review in reviews %}
+            {{ review }}
+            {% if review.content_picture %}
+            <img src="{{ review.content_picture.url }}" class="picture">
+            {% endif %}
+            <br>
+
+    {% endfor %}
+{% else %}
+    <i> Je n'ai pas encore publié de critique </i>
+{% endif %}
+</div>
+
+
 <br>
-<a>Mes critiques</a>
-<br>
-<a>S'abonner</a>
 
 
 {% endblock %}

@@ -5,9 +5,22 @@
 <h1> Critiques publiées </h1>
 
 {% for review in review_objects %}
+    <style>.ticket-picture {max-width: 15%;}</style>  <!--TO MODIFY-->
      <!-- TO-DO Lier les tickets au review -->
 
-    <p><h2>{{ review }}</h2> par {{ review.user }} à {{ review.time_created}}</p>
+    <p><h2>{{ review }}</h2> par {{ review.user }} le {{ review.time_created}}</p>
+
+        {% if review.ticket.content_picture %}
+            <div class="post">
+                <img src="{{ review.ticket.content_picture.url }}" class="ticket-picture">
+            </div>
+        {% endif %}
+
+        {% if review.content_picture %}
+            <div class="post">
+                <img src="{{ review.content_picture.url }}" class="ticket-picture">
+            </div>
+        {% endif %}
 
 {% endfor %}
 

@@ -25,13 +25,6 @@ def ticket_list_view(request):
 
 
 @login_required
-def ticket_page(request, ticket_id):
-
-    ticket = get_object_or_404(Ticket, id=ticket_id)
-    return render(request, 'ticket_page.html', context={'ticket_id': ticket})
-
-
-@login_required
 def review_list_view(request):
 
     review_objects = Review.objects.all()
@@ -67,7 +60,30 @@ def user_page(request, user_id):
 
     guest = get_object_or_404(User, id=user_id)
 
-    return render(request, 'user_page.html', context={'guest_id': guest})
+    ## TODO - Find Alternatives
+    tickets = []
+    for ticket in Ticket.objects.all():
+        if user_id == ticket.ticket_author.id:
+            tickets.append(ticket)
+    reviews = []
+    for review in Review.objects.all():
+        if user_id == review.user.id:
+            reviews.append(review)
+
+    return render(request, 'user_page.html', context={'guest_id': guest, 'tickets': tickets, 'reviews': reviews})
+
+
+@login_required
+def user_object(request, user_id):
+
+    for ticket in Ticket.objects.all():
+        print(ticket)
+        print(ticket.user)
+
+        if user_id == ticket.user:
+            print("Good")
+
+    return
 
 
 @login_required
@@ -86,10 +102,12 @@ def create_ticket(request):
 
 @login_required
 def create_review(request):
+    """This is a review query which is not link to any ticket"""
 
-    review_form = forms.Review_Creation_Form()
+    review_form = forms.review_creation_form()
+
     if request.method == 'POST':
-        review_form = forms.Review_Creation_Form(request.POST)
+        review_form = forms.review_creation_form(request.POST, request.FILES)
         if review_form.is_valid():
             review = review_form.save(commit=False)
             review.user = request.user
@@ -99,4 +117,36 @@ def create_review(request):
                 pass
             review.save()
             return redirect('home')
+
     return render(request, 'review_submission.html', context={'form': review_form})
+
+
+@login_required
+def review_from_ticket(request, ticket_id):
+    """This is a review query linked to a ticket"""
+
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    review_form = forms.linked_review_form()
+
+    if request.method == 'POST':
+        review_form = forms.linked_review_form(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            ticket = Ticket.objects.get(pk=ticket_id)
+            ticket.status = False
+            ticket.save()
+            review.ticket = ticket
+            review.save()
+
+            return redirect('home')
+
+    return render(request, 'ticket_page.html', context={'ticket_id': ticket, 'form': review_form})
+
+
+@login_required
+def subscribe(request, user_id):
+    # TODO
+    pass
+

@@ -9,6 +9,10 @@
     <body>
         <div class="sidebar">
             {% if user.is_authenticated %}
+                {% if user.profile_photo %}
+                    <img class="avatar" src="{{ user.profile_photo.url }}">
+                {% endif %}
+
                 <h1><a href="{% url 'home' %}">LitReview</a></h1>
                 <p>Bonjour, {{ user }} !</p>
                 <br>
