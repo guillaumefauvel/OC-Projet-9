@@ -2,9 +2,23 @@
 
 {% block content %}
 
-<h1> {{ ticket_id.content_reference }} </h1>
+<style>
+    .reference {display: flex; align-items: center; gap: 15px}
+</style>
 
-<p>{{ ticket_id.content_reference }}</p>
+<div class="reference">
+    <h1>
+    {{ ticket_id.content_reference }}
+    {% if ticket_id.publication_year %}
+            ({{ticket_id.publication_year}})
+    {% endif %}
+    </h1>
+    <p>- {{ ticket_id.content_author }}</p>
+</div>
+
+{% if ticket_id.content_picture %}
+    <img src="{{ ticket_id.content_picture.url }}">
+{% endif %}
 
 <h2>Publier votre critique</h2>
 <form method="post">

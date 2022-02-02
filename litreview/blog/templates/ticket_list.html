@@ -2,21 +2,28 @@
 
 {% block content %}
 
+<style>.ticket-picture {max-width: 15%;}</style>  <!--TOO MODIFY-->
+
+
 <h1> Tickets ouvert </h1>
 
-{% for ticket in ticket_objects %}
-    <style>.ticket-picture {max-width: 15%;}</style>  <!--TOO MODIFY-->
+{% if ticket_objects %}
+    {% for ticket in ticket_objects %}
+        {% if ticket.status %}
+        <p><h2>{{ ticket }}</h2> par {{ ticket.ticket_author }} le {{ ticket.time_created}}</p>
+                <a href="{% url 'ticket-page' ticket.id %}">Rédiger une critique</a>
+                <br><br>
+                {% if ticket.content_picture %}
+                <div class="post">
+                    <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
+                </div>
+                {% endif %}
+        <br>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <p> Il n'y pas de ticket ouvert.</p>
+{% endif %}
 
-    {% if ticket.status %}
-    <p><h2>{{ ticket }}</h2> par {{ ticket.ticket_author }} le {{ ticket.time_created}}</p>
-            <a href="{% url 'ticket-page' ticket.id %}">Rédiger critique</a>
-            {% if ticket.content_picture %}
-            <div class="post">
-                <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
-            </div>
-            {% endif %}
-    {% endif %}
-
-{% endfor %}
 
 {% endblock %}

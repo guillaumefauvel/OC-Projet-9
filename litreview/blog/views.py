@@ -138,6 +138,10 @@ def review_from_ticket(request, ticket_id):
             ticket.status = False
             ticket.save()
             review.ticket = ticket
+            review.content_reference = ticket.content_reference
+            review.content_author = ticket.content_author
+            review.content_picture = ticket.content_picture
+            review.publication_year = ticket.publication_year
             review.save()
 
             return redirect('home')

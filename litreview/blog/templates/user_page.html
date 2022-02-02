@@ -7,21 +7,22 @@
 
 <!--TODO MODIFY-->
 <style>
-.picture {max-width: 15%;}
-.content-item {display: flex; flex-direction: column; align-content: space-around; gap: 20px 20px}
+.content-items {display: flex; flex-direction: column;}
+.content-items a.title {font-weight: bold;}
 </style>
 
-
 <h2>Mes tickets</h2>
-<div class="content-item">
+<div class="content-items">
 {% if tickets %}
     {% for ticket in tickets %}
-            {{ ticket }}
-            {% if ticket.content_picture %}
-            <img src="{{ ticket.content_picture.url }}" class="picture">
-            {% endif %}
+        {% if ticket.status %}
+            <p><a href="{% url 'ticket-page' ticket.id %}" class="title">{{ ticket }}</a>
+                {% if ticket.publication_year %}
+                ({{ticket.publication_year}})
+                {% endif %}
+                par {{ ticket.content_author }} </p>
             <br>
-
+        {% endif %}
     {% endfor %}
 {% else %}
     <i> Je n'ai pas encore ouvert de ticket </i>
@@ -29,15 +30,16 @@
 </div>
 
 <h2>Mes critiques</h2>
-<div class="content-item">
+<div class="content-items">
 {% if reviews %}
     {% for review in reviews %}
-            {{ review }}
-            {% if review.content_picture %}
-            <img src="{{ review.content_picture.url }}" class="picture">
+        <p><a class="title" >{{ review }}</a>
+            {% if review.publication_year %}
+            ({{review.publication_year}})
             {% endif %}
-            <br>
-
+            par {{ review.content_author }
+        </p>
+        <br>
     {% endfor %}
 {% else %}
     <i> Je n'ai pas encore publié de critique </i>
