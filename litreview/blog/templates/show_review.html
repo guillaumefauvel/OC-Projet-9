@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .reference {display: flex; align-items: center; gap: 15px}
+    .review-text {max-width: 50%}
+</style>
+
+<div class="reference">
+    <h1>
+    {{ review.content_reference }}
+    {% if review.publication_year %}
+            ({{review.publication_year}})
+    {% endif %}
+    </h1>
+    <p>- {{ review.content_author }}</p>
+</div>
+
+<img src="{{ review.content_picture.url }}" class="ticket-picture">
+
+
+<div class="users-infos">
+    <p>Notes : {{ review.rating }}</p>
+    <p>Titre de la critique : {{ review.headline }}</p>
+<!--    TODO - Rajouter lien vers l'auteur -->
+    <p>Auteur de la critique : {{ review.user }}</p>
+    <p class="review-text">
+       {{ review.body }}
+    </p>
+</div>
+
+
+
+{% endblock %}

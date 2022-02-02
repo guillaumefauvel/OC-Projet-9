@@ -20,6 +20,9 @@ class Ticket(models.Model):
     def __str__(self):
         return self.content_reference
 
+    class Meta:
+        ordering = ['-time_created']
+
 
 class Review(models.Model):
 
@@ -36,16 +39,17 @@ class Review(models.Model):
     publication_year = models.IntegerField(verbose_name='Date de publication',
                                            validators=[MinValueValidator(-400),MaxValueValidator(datetime.date.today().year+1)],
                                            blank=True, null=True)
-
     def __str__(self):
         return self.headline
+
+    class Meta:
+        ordering = ['-time_created']
 
 
 class UserFollows(models.Model):
     class Meta:
         # ensures we don't get multiple UserFollows instances
         # for unique user-user_followed pairs
-
         # user_object = ""
         # following = []
         # followers = []

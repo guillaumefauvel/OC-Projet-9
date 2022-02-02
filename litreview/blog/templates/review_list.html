@@ -8,9 +8,14 @@
 
 {% if review_objects %}
         {% for review in review_objects %}
-            <p><h2>{{ review.content_reference }} - {{ review.headline }}</h2> Publié par {{ review.user }} le {{ review.time_created}}</p>
+            <p>
+                <h2>{{ review.content_reference }} - <a href="{{ review.id }}">{{ review.headline }}</a></h2>
+                <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
+
+            </p>
+
                 {% if review.ticket.content_picture %}
-                    <div class="post">
+                    <div>
                         <img src="{{ review.ticket.content_picture.url }}" class="ticket-picture">
                     </div>
                 {% endif %}

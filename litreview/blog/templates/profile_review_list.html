@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>.ticket-picture {max-width: 15%;}</style>  <!--TODO MODIFY-->
+
+<h1> Tickets ouvert </h1>
+
+<div class="content-items">
+{% if guest_tickets %}
+    {% for ticket in guest_tickets %}
+        {% if ticket.status %}
+            <p><a href="{% url 'ticket-page' ticket.id %}" class="title">{{ ticket }}</a>
+                {% if ticket.publication_year %}
+                ({{ticket.publication_year}})
+                {% endif %}
+                par {{ ticket.content_author }} </p>
+            <br>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <i> Je n'ai pas encore ouvert de ticket </i>
+{% endif %}
+</div>
+
+
+{% endblock %}

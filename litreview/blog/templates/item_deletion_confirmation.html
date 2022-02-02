@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.choices {diplay: flex}
+.choices {justify-content: right}
+</style>
+
+<a>Confirmer vous la suppression de ce ticket ? </a>
+<br><br>
+<div class="choices">
+    <form action="{% url 'confirm-delete-ticket' ticket_id %}">
+        <input type="submit" value="Supprimer" />
+    </form>
+
+    <form action="{% url 'home' %}">
+        <input type="submit" value="Annuler" />
+    </form>
+</div>
+
+{% endblock %}
+

@@ -4,14 +4,12 @@
 
 <h1> Profil de {{ user }} </h1>
 
-<a>Mes tickets</a>
-<br>
-
-
-<a>Mes critiques</a>
-<br>
+<a href="{% url 'profile-tickets' %}">Mes tickets</a>
+<br><br>
+<a href="{% url 'profile-reviews' %}">Mes critiques</a>
+<br><br>
 <a>Gérer mes abonnements</a>
-<br>
+<br><br>
 <a>Changer mon mots de passe</a>
-<br>
+<br><br>
 {% endblock %}

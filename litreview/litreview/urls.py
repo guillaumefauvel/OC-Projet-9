@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+import helpers.views
+
 
 from django.contrib.auth.views import (LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
 
@@ -53,10 +55,25 @@ urlpatterns = [
 
     path('review/creation', views.create_review, name='review-creation'),
     path('review/list', views.review_list_view, name='review-list'),
+    path('review/<int:review_id>', views.show_review, name='show-review'),
 
     path('userlist/', views.user_list, name='user-list'),
     path('profile/', views.profile, name='profile'),
 
+    path('profile/tickets/', views.profile_tickets, name='profile-tickets'),
+    path('profile/tickets/delete/<int:ticket_id>', views.delete_ticket, name='delete-ticket'),
+    path('profile/tickets/delete/<int:ticket_id>/confirm', views.confirm_deletion_ticket, name='confirm-delete-ticket'),
+    path('profile/tickets/modify/<int:ticket_id>', views.modify_ticket, name='modify-ticket'),
+
+
+    path('profile/reviews/', views.profile_reviews, name='profile-reviews'),
+    path('profile/reviews/delete/<int:review_id>', views.delete_review, name='delete-review'),
+    path('profile/reviews/delete/<int:review_id>/confirm', views.confirm_deletion_review,name='confirm-delete-review'),
+
+
     path('user/<int:user_id>', views.user_page, name='user-page'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = "helpers.views.handle_not_found"
+

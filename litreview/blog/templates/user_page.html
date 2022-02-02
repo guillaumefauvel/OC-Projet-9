@@ -33,11 +33,11 @@
 <div class="content-items">
 {% if reviews %}
     {% for review in reviews %}
-        <p><a class="title" >{{ review }}</a>
+        <p><a class="title" href="{% url 'show-review' review.id %}">{{ review }}</a>
             {% if review.publication_year %}
             ({{review.publication_year}})
             {% endif %}
-            par {{ review.content_author }
+            par {{ review.content_author }}
         </p>
         <br>
     {% endfor %}

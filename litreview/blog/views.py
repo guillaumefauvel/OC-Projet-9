@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from . import forms
 
 import operator
-# Create your views here.
 
 @login_required
 def home(request):
@@ -16,7 +15,6 @@ def home(request):
 def ticket_list_view(request):
 
     ticket_objects = Ticket.objects.all()
-    ticket_objects = sorted(ticket_objects, key=operator.attrgetter('time_created'), reverse=True)
 
     context = {
         'ticket_objects': ticket_objects
@@ -28,13 +26,18 @@ def ticket_list_view(request):
 def review_list_view(request):
 
     review_objects = Review.objects.all()
-    review_objects = sorted(review_objects, key=operator.attrgetter('time_created'), reverse=True)
 
     context = {
         'review_objects': review_objects
     }
     return render(request, "review_list.html", context)
 
+@login_required
+def show_review(request, review_id):
+
+    review_object = Review.objects.get(id=review_id)
+
+    return render(request, 'show_review.html', context={'review': review_object} )
 
 @login_required
 def user_list(request):
@@ -56,6 +59,34 @@ def profile(request):
 
 
 @login_required
+def profile_tickets(request):
+
+    guest_tickets = Ticket.objects.filter(ticket_author=request.user)
+
+    context = {
+        'item_list': guest_tickets,
+        'heading_one': 'Tickets ouverts',
+        'empty_message': 'Je n\'ai pas encore ouvert de ticket',
+    }
+
+    return render(request, 'profile_list.html', context=context)
+
+
+@login_required
+def profile_reviews(request):
+
+    guest_reviews = Review.objects.filter(user=request.user)
+
+    context = {
+        'item_list': guest_reviews,
+        'heading_one': 'Critiques publiées',
+        'empty_message': 'Vous n\'avez pas encore publié de critique',
+    }
+
+    return render(request, 'profile_list.html', context=context)
+
+
+@login_required
 def user_page(request, user_id):
 
     guest = get_object_or_404(User, id=user_id)
@@ -74,24 +105,11 @@ def user_page(request, user_id):
 
 
 @login_required
-def user_object(request, user_id):
-
-    for ticket in Ticket.objects.all():
-        print(ticket)
-        print(ticket.user)
-
-        if user_id == ticket.user:
-            print("Good")
-
-    return
-
-
-@login_required
 def create_ticket(request):
 
-    ticket_form = forms.Ticket_Creation_Form()
+    ticket_form = forms.ticket_creation_form()
     if request.method == 'POST':
-        ticket_form = forms.Ticket_Creation_Form(request.POST, request.FILES)
+        ticket_form = forms.ticket_creation_form(request.POST, request.FILES)
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
             ticket.ticket_author = request.user
@@ -154,3 +172,74 @@ def subscribe(request, user_id):
     # TODO
     pass
 
+@login_required
+def delete_ticket(request, ticket_id):
+
+    try:
+        ticket = Ticket.objects.get(id=ticket_id)
+    except: # TODO Associer au type d'erreur
+        return render(request, 'access_denied.html')
+
+    if request.user == ticket.ticket_author:
+        return render(request, 'item_deletion_confirmation.html', context={'ticket_id': ticket_id})
+    else:
+        return render(request, 'access_denied.html')
+
+
+@login_required
+def confirm_deletion_ticket(request, ticket_id):
+
+    try:
+        ticket = Ticket.objects.get(id=ticket_id)
+    except: # TODO Associer au type d'erreur
+        return render(request, 'access_denied.html')
+
+    ticket.delete()
+
+    return redirect('home')
+
+
+@login_required
+def modify_ticket(request, ticket_id):
+
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    #
+    # if request.user == ticket.ticket_author:
+    if request.method == 'POST':
+        form = forms.ticket_creation_form(request.POST, instance=ticket)
+        if form.is_valid():
+            form.save()
+            return redirect('profile-tickets')
+    else:
+        form = forms.ticket_creation_form(instance=ticket)
+
+    return render(request, 'ticket_update.html', {'form': form})
+
+    # else:
+    #     return render(request, 'access_denied.html')
+
+@login_required
+def delete_review(request, review_id):
+
+    try:
+        review = Review.objects.get(id=review_id)
+    except: # TODO Associer au type d'erreur
+        return render(request, 'home.html')
+
+    if request.user == review.user:
+        return render(request, 'item_deletion_confirmation.html', context={'review_id': review_id})
+    else:
+        return render(request, 'home.html')
+
+
+@login_required
+def confirm_deletion_review(request, review_id):
+
+    try:
+        review = Review.objects.get(id=review_id)
+    except: # TODO Associer au type d'erreur
+        return render(request, 'home.html')
+
+    review.delete()
+
+    return redirect('home')
