@@ -24,7 +24,7 @@
                 {% endif %}
                 par {{ item.content_author }}
 
-                {% if item.status != True %}
+                {% if item.status != True and item.to_class_name == 'Ticket' %}
                     <a> - Ticket fermé -> </a>
                     {% for review in review_list %}
                         {% if review.ticket.id == item.id %}

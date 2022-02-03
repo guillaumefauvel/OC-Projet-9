@@ -59,6 +59,8 @@ urlpatterns = [
 
     path('userlist/', views.user_list, name='user-list'),
     path('user/<int:user_id>', views.user_page, name='user-page'),
+    path('user/<int:user_id>/follow', views.follow, name='follow-user'),
+    path('user/<int:user_id>/unfollow', views.unfollow, name='unfollow-user'),
 
     path('profile/', views.profile, name='profile'),
 
@@ -72,6 +74,10 @@ urlpatterns = [
     path('profile/reviews/delete/<int:review_id>', views.delete_review, name='delete-review'),
     path('profile/reviews/delete/<int:review_id>/confirm', views.confirm_deletion_review,name='confirm-delete-review'),
     path('profile/reviews/modify/<int:review_id>', views.modify_review, name='modify-review'),
+
+    path('profile/subscriptions', views.manage_subscriptions, name='subscription-management'),
+    path('profile/subscriptions/delete/<int:user_id>', views.unfollow_from_manager, name='delete-subscription'),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,4 +1,50 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<style>
+    .reference {display: flex; align-items: center; gap: 5px}
+    .content {max-width: 20%}
+    a {text-decoration: none}
+    .item-details {font-size: 0.8em}
+</style>
+
+
+{% if publications %}
+    {% for item in publications %}
+            <div class="reference">
+                <h3>
+                {{ item.content_reference }}
+                {% if item.publication_year %}
+                        ({{item.publication_year}})
+                {% endif %}
+                </h3>
+                <p>- {{ item.content_author }}</p>
+            </div>
+
+            <div class="publication-data">
+                {% if item.to_class_name == 'Review' %}
+                    <p class="item-details">Critique publié par {{ item.user }} le {{ item.time_created }}</p>
+                    <h5>{{item.headline}} - {{ item.rating}}/5 </h5>
+                    <a href="{% url 'show-review' item.id %}"> Consulter la critique </a>
+                {% else %}
+                    <p class="item-details">Ticket ouvert par {{ item.ticket_author }} le {{ item.time_created }}</p>
+                    <p>{{ item.user_comment }}</p>
+                    <a href="{% url 'ticket-page' item.id %}"> Publier une critique </a>
+                {% endif %}
+            </div>
+
+            <div class="content">
+                {% if item.content_picture %}
+                    <img src="{{ item.content_picture.url }}" class="ticket-picture">
+                {% endif %}
+            </div>
+    {% endfor %}
+
+{% else %}
+    <p> Votre flux est vide, abonnez-vous à un quelqu'un ayant
+        déjà publié du contenu afin d'alimenter votre flux.</p>
+{% endif %}
+
+
+
 {% endblock content %}

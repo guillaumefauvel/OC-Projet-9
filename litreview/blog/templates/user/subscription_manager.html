@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--TODO - Modify CSS-->
+<style>
+    .subscription {
+    display: flex;
+    gap: 20px;
+    }
+</style>
+
+<br>
+{% if followers %}
+    {% for follower in followers %}
+        <ul>
+            <li>
+                <div class="subscription">
+                {{ follower.username }}
+                <form action='{% url "delete-subscription" follower.id %}' method='GET'>
+                <button type='submit'> Se désabonner </button>
+                </form>
+                </div>
+            </li>
+        </ul>
+    {% endfor %}
+{% else %}
+    <p> Vous ne suivez personne pour le moment </p>
+{% endif %}
+
+{% endblock %}

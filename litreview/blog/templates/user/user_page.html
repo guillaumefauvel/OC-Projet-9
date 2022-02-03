@@ -3,7 +3,17 @@
 {% block content %}
 
 <h1> Profil de {{ guest_id.username }}</h1>
-<b><a href="">S'abonner</a></b>
+
+{% if action == 'follow' %}
+    <form action='{{guest_id.id}}/{{action}}' method='GET'>
+    <button type='submit'> S'abonner </button>
+    </form>
+{% elif action == 'unfollow' %}
+    <form action='{{guest_id.id}}/{{action}}' method='GET'>
+    <button type='submit'> Se désabonner </button>
+    </form>
+{% elif action == 'self' %}
+{% endif %}
 
 <!--TODO MODIFY-->
 <style>

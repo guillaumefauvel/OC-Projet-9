@@ -1,14 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Ticket, Review
-from authentication.models import User
+from authentication.models import User, UserFollows
 from django.contrib.auth.decorators import login_required
 from . import forms
 
-import operator
-
 @login_required
 def home(request):
-    return render(request, 'home.html')
+
+    try:
+
+        followers = UserFollows.objects.filter(user_id=request.user)
+        tickets = []
+        reviews = []
+
+        for user in followers:
+            try:
+                for ticket in Ticket.objects.filter(ticket_author=user.followed_user_id):
+                    tickets.append(ticket)
+            except: # TODO Implement DoestNotExist
+                pass
+
+            try:
+                for review in Review.objects.filter(user=user.followed_user_id):
+                    reviews.append(review)
+            except: # TODO Implement DoestNotExist
+                pass
+
+        publications = tickets + reviews
+        publications = sorted(publications, key=lambda x: x.time_created, reverse=True)
+
+    except: # TODO Implement DoestNotExist
+        publications = []
+
+    return render(request, 'home.html', context={'publications': publications})
 
 
 @login_required
@@ -98,15 +122,24 @@ def profile_reviews(request):
 def user_page(request, user_id):
 
     guest = get_object_or_404(User, id=user_id)
-
     tickets = Ticket.objects.filter(ticket_author=user_id)
     reviews = Review.objects.filter(user=user_id)
+
+    try:
+        relation = UserFollows.objects.get(user_id=request.user, followed_user_id=guest)
+        action = 'unfollow'
+    except: # TODO DoestNotExit alternative
+        if guest.id != request.user.id:
+            action = 'follow'
+        else:
+            action = 'self'
 
     return render(request, 'user/user_page.html', context={
         'guest_id': guest,
         'tickets': tickets,
         'reviews': reviews,
         'page_ref': 'ticket-page',
+        'action': action,
     })
 
 
@@ -256,8 +289,38 @@ def confirm_deletion_review(request, review_id):
 
     return redirect('home')
 
+@login_required
+def follow(request, user_id):
+
+    user_object = User.objects.get(id=user_id)
+    UserFollows.objects.create(user_id=request.user, followed_user_id=user_object)
+
+    return redirect('user-page', user_id)
 
 @login_required
-def subscribe(request, user_id):
-    # TODO
-    pass
+def unfollow(request, user_id):
+
+    user_object = User.objects.get(id=user_id)
+    relation = UserFollows.objects.get(user_id=request.user, followed_user_id=user_object)
+    relation.delete()
+
+    return redirect('user-page', user_id)
+
+@login_required
+def manage_subscriptions(request):
+
+    followers = UserFollows.objects.filter(user_id=request.user.id)
+    user_objects = []
+    for value in followers:
+        user_objects.append(User.objects.get(id=value.followed_user_id.id))
+
+    return render(request, 'user/subscription_manager.html', context={'followers': user_objects})
+
+@login_required
+def unfollow_from_manager(request, user_id):
+
+    user_object = User.objects.get(id=user_id)
+    relation = UserFollows.objects.get(user_id=request.user, followed_user_id=user_object)
+    relation.delete()
+
+    return redirect('subscription-management')

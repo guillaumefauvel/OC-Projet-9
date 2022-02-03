@@ -9,14 +9,15 @@
 {% if review_objects %}
         {% for review in review_objects %}
             <p>
-                <h2>{{ review.content_reference }} - <a href="{{ review.id }}">{{ review.headline }}</a></h2>
+                <h2>
+                    {{ review.content_reference }} - <a href="{{ review.id }}">{{ review.headline }}</a> -
+                    {{ review.rating}}/5
+                </h2>
                 <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
-
             </p>
-
-                {% if review.ticket.content_picture %}
+                {% if review.content_picture %}
                     <div>
-                        <img src="{{ review.ticket.content_picture.url }}" class="ticket-picture">
+                        <img src="{{ review.content_picture.url }}" class="ticket-picture">
                     </div>
                 {% endif %}
         {% endfor %}

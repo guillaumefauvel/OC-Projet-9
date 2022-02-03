@@ -3,7 +3,6 @@ from django.conf import settings
 from django.db import models
 import datetime
 
-
 class Ticket(models.Model):
 
     content_reference = models.CharField(verbose_name='Titre de la référence', max_length=80)
@@ -19,6 +18,9 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.content_reference
+
+    def to_class_name(value):
+        return value.__class__.__name__
 
     class Meta:
         ordering = ['-time_created']
@@ -42,14 +44,8 @@ class Review(models.Model):
     def __str__(self):
         return self.headline
 
+    def to_class_name(value):
+        return value.__class__.__name__
+
     class Meta:
         ordering = ['-time_created']
-
-
-class UserFollows(models.Model):
-    class Meta:
-        # ensures we don't get multiple UserFollows instances
-        # for unique user-user_followed pairs
-        # unique_together = ('user', 'followed_user', )
-        pass
-
