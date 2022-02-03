@@ -7,10 +7,10 @@
 .choices {justify-content: right}
 </style>
 
-<a>Confirmer vous la suppression de ce ticket ? </a>
+<a>Confirmer vous la suppression de {{ item_name }} ? </a>
 <br><br>
 <div class="choices">
-    <form action="{% url 'confirm-delete-ticket' ticket_id %}">
+    <form action="{% url deletion_path item_id %}">
         <input type="submit" value="Supprimer" />
     </form>
 

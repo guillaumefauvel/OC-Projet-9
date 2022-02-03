@@ -5,6 +5,7 @@
 <style>
     .reference {display: flex; align-items: center; gap: 15px}
     .review-text {max-width: 50%}
+    a {text-decoration: none}
 </style>
 
 <div class="reference">
@@ -21,12 +22,13 @@
     <img src="{{ review.content_picture.url }}" class="ticket-picture">
 {% endif %}
 
-
 <div class="users-infos">
     <p>Notes : {{ review.rating }}</p>
     <p>Titre de la critique : {{ review.headline }}</p>
 <!--    TODO - Rajouter lien vers l'auteur -->
-    <p>Auteur de la critique : {{ review.user }}</p>
+    <p>Auteur de la critique :
+        <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
+    </p>
     <p class="review-text">
        {{ review.body }}
     </p>

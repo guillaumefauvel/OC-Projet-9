@@ -19,7 +19,7 @@ def ticket_list_view(request):
     context = {
         'ticket_objects': ticket_objects
     }
-    return render(request, "ticket_list.html", context)
+    return render(request, "tickets_reviews/ticket_list.html", context)
 
 
 @login_required
@@ -30,14 +30,14 @@ def review_list_view(request):
     context = {
         'review_objects': review_objects
     }
-    return render(request, "review_list.html", context)
+    return render(request, "tickets_reviews/review_list.html", context)
 
 @login_required
 def show_review(request, review_id):
 
     review_object = Review.objects.get(id=review_id)
 
-    return render(request, 'show_review.html', context={'review': review_object} )
+    return render(request, 'tickets_reviews/show_review.html', context={'review': review_object} )
 
 @login_required
 def user_list(request):
@@ -47,7 +47,7 @@ def user_list(request):
     context = {
         'user_objects': user_objects
     }
-    return render(request, "user_list.html", context)
+    return render(request, "user/user_list.html", context)
 
 
 @login_required
@@ -55,16 +55,18 @@ def profile(request):
 
     user_name = request.user
 
-    return render(request, 'profile_view.html', context={'user_name': user_name})
+    return render(request, 'user/profile_view.html', context={'user_name': user_name})
 
 
 @login_required
 def profile_tickets(request):
 
     guest_tickets = Ticket.objects.filter(ticket_author=request.user)
+    reviews = Review.objects.all()
 
     context = {
         'item_list': guest_tickets,
+        'review_list': reviews,
         'heading_one': 'Tickets ouverts',
         'empty_message': 'Je n\'ai pas encore ouvert de ticket',
         'page_ref':'ticket-page',
@@ -72,7 +74,7 @@ def profile_tickets(request):
         'modify_item': 'modify-ticket',
     }
 
-    return render(request, 'profile_list.html', context=context)
+    return render(request, 'user/profile_list.html', context=context)
 
 
 @login_required
@@ -89,7 +91,7 @@ def profile_reviews(request):
         'modify_item': 'modify-review',
     }
 
-    return render(request, 'profile_list.html', context=context)
+    return render(request, 'user/profile_list.html', context=context)
 
 
 @login_required
@@ -97,17 +99,10 @@ def user_page(request, user_id):
 
     guest = get_object_or_404(User, id=user_id)
 
-    ## TODO - Find Alternatives
-    tickets = []
-    for ticket in Ticket.objects.all():
-        if user_id == ticket.ticket_author.id:
-            tickets.append(ticket)
-    reviews = []
-    for review in Review.objects.all():
-        if user_id == review.user.id:
-            reviews.append(review)
+    tickets = Ticket.objects.filter(ticket_author=user_id)
+    reviews = Review.objects.filter(user=user_id)
 
-    return render(request, 'user_page.html', context={
+    return render(request, 'user/user_page.html', context={
         'guest_id': guest,
         'tickets': tickets,
         'reviews': reviews,
@@ -126,7 +121,10 @@ def create_ticket(request):
             ticket.ticket_author = request.user
             ticket.save()
             return redirect('ticket-list')
-    return render(request, 'ticket_submission.html', context={'form': ticket_form})
+
+    context = {'form': ticket_form, 'item_type': 'un nouveau ticket'}
+
+    return render(request, 'tickets_reviews/item_submission.html', context=context)
 
 
 @login_required
@@ -147,7 +145,9 @@ def create_review(request):
             review.save()
             return redirect('home')
 
-    return render(request, 'review_submission.html', context={'form': review_form})
+    context = {'form': review_form, 'item_type': 'une nouvelle critique'}
+
+    return render(request, 'tickets_reviews/item_submission.html', context=context)
 
 
 @login_required
@@ -175,24 +175,20 @@ def review_from_ticket(request, ticket_id):
 
             return redirect('home')
 
-    return render(request, 'ticket_page.html', context={'ticket_id': ticket, 'form': review_form})
+    return render(request, 'tickets_reviews/ticket_page.html', context={'ticket_id': ticket, 'form': review_form})
 
-
-@login_required
-def subscribe(request, user_id):
-    # TODO
-    pass
 
 @login_required
 def delete_ticket(request, ticket_id):
 
-    try:
-        ticket = Ticket.objects.get(id=ticket_id)
-    except: #  TODO Associer au type d'erreur - Transformer en 404
-        return render(request, 'access_denied.html')
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    context = {'item_id': ticket_id,
+               'item_name': 'ce ticket',
+               'deletion_path': 'confirm-delete-ticket'}
 
     if request.user == ticket.ticket_author:
-        return render(request, 'item_deletion_confirmation.html', context={'ticket_id': ticket_id})
+        return render(request, 'tickets_reviews/item_deletion_confirmation.html', context=context)
     else:
         return render(request, 'access_denied.html')
 
@@ -200,10 +196,7 @@ def delete_ticket(request, ticket_id):
 @login_required
 def confirm_deletion_ticket(request, ticket_id):
 
-    try:
-        ticket = Ticket.objects.get(id=ticket_id)
-    except: # TODO Associer au type d'erreur - Transformer en 404
-        return render(request, 'access_denied.html')
+    ticket = get_object_or_404(Ticket, id=ticket_id)
 
     ticket.delete()
 
@@ -223,7 +216,7 @@ def modify_ticket(request, ticket_id):
     else:
         form = forms.ticket_creation_form(instance=ticket)
 
-    return render(request, 'item_update.html', {'form': form, 'heading':'du ticket'})
+    return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading':'du ticket'})
 
 @login_required
 def modify_review(request, review_id):
@@ -238,18 +231,19 @@ def modify_review(request, review_id):
     else:
         form = forms.review_creation_form(instance=review)
 
-    return render(request, 'item_update.html', {'form': form, 'heading':'de la critique'})
+    return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading':'de la critique'})
 
 @login_required
 def delete_review(request, review_id):
 
-    try:
-        review = Review.objects.get(id=review_id)
-    except: # TODO Associer au type d'erreur -Transformer en 404
-        return render(request, 'home.html')
+    review = get_object_or_404(Review, id=review_id)
+
+    context = {'item_id': review_id,
+               'item_name': 'cette critique',
+               'deletion_path':'confirm-delete-review'}
 
     if request.user == review.user:
-        return render(request, 'item_deletion_confirmation.html', context={'review_id': review_id})
+        return render(request, 'tickets_reviews/item_deletion_confirmation.html', context=context)
     else:
         return render(request, 'home.html')
 
@@ -257,11 +251,13 @@ def delete_review(request, review_id):
 @login_required
 def confirm_deletion_review(request, review_id):
 
-    try:
-        review = Review.objects.get(id=review_id)
-    except: # TODO Associer au type d'erreur - Transformer en 404
-        return render(request, 'home.html')
-
+    review = get_object_or_404(Review, id=review_id)
     review.delete()
 
     return redirect('home')
+
+
+@login_required
+def subscribe(request, user_id):
+    # TODO
+    pass

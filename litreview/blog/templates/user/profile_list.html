@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .ticket-picture {max-width: 15%;}
+</style>  <!--TODO MODIFY-->
+
+
+<h1> {{ heading_one }} </h1>
+
+<div class="content-items">
+{% if item_list %}
+    {% for item in item_list %}
+            <p>
+                {% if item.status != True %}
+                    <a> {{ item }} </a>
+                {% else %}
+                    <a href="{% url page_ref item.id %}" class="title">{{ item }}</a>
+                {% endif %}
+
+                {% if item.publication_year %}
+                    ({{item.publication_year}})
+                {% endif %}
+                par {{ item.content_author }}
+
+                {% if item.status != True %}
+                    <a> - Ticket fermé -> </a>
+                    {% for review in review_list %}
+                        {% if review.ticket.id == item.id %}
+                            <a href="{% url 'show-review' review.id %}"> Critique </a>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                        <a href="{% url delete_item item.id %}" > Supprimer </a> |
+                        <a href="{% url modify_item item.id %}" > Modifier </a>
+                {% endif %}
+            </p>
+            <br>
+
+    {% endfor %}
+{% else %}
+    <i> {{ empty_message }} </i>
+{% endif %}
+</div>
+
+
+{% endblock %}
