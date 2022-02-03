@@ -17,7 +17,9 @@
     <p>- {{ review.content_author }}</p>
 </div>
 
-<img src="{{ review.content_picture.url }}" class="ticket-picture">
+{% if review.content_picture %}
+    <img src="{{ review.content_picture.url }}" class="ticket-picture">
+{% endif %}
 
 
 <div class="users-infos">

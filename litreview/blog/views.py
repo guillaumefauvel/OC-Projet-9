@@ -67,6 +67,9 @@ def profile_tickets(request):
         'item_list': guest_tickets,
         'heading_one': 'Tickets ouverts',
         'empty_message': 'Je n\'ai pas encore ouvert de ticket',
+        'page_ref':'ticket-page',
+        'delete_item': 'delete-ticket',
+        'modify_item': 'modify-ticket',
     }
 
     return render(request, 'profile_list.html', context=context)
@@ -81,6 +84,9 @@ def profile_reviews(request):
         'item_list': guest_reviews,
         'heading_one': 'Critiques publiées',
         'empty_message': 'Vous n\'avez pas encore publié de critique',
+        'page_ref':'show-review',
+        'delete_item': 'delete-review',
+        'modify_item': 'modify-review',
     }
 
     return render(request, 'profile_list.html', context=context)
@@ -101,7 +107,12 @@ def user_page(request, user_id):
         if user_id == review.user.id:
             reviews.append(review)
 
-    return render(request, 'user_page.html', context={'guest_id': guest, 'tickets': tickets, 'reviews': reviews})
+    return render(request, 'user_page.html', context={
+        'guest_id': guest,
+        'tickets': tickets,
+        'reviews': reviews,
+        'page_ref': 'ticket-page',
+    })
 
 
 @login_required
@@ -177,7 +188,7 @@ def delete_ticket(request, ticket_id):
 
     try:
         ticket = Ticket.objects.get(id=ticket_id)
-    except: # TODO Associer au type d'erreur
+    except: #  TODO Associer au type d'erreur - Transformer en 404
         return render(request, 'access_denied.html')
 
     if request.user == ticket.ticket_author:
@@ -191,7 +202,7 @@ def confirm_deletion_ticket(request, ticket_id):
 
     try:
         ticket = Ticket.objects.get(id=ticket_id)
-    except: # TODO Associer au type d'erreur
+    except: # TODO Associer au type d'erreur - Transformer en 404
         return render(request, 'access_denied.html')
 
     ticket.delete()
@@ -203,8 +214,7 @@ def confirm_deletion_ticket(request, ticket_id):
 def modify_ticket(request, ticket_id):
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
-    #
-    # if request.user == ticket.ticket_author:
+
     if request.method == 'POST':
         form = forms.ticket_creation_form(request.POST, instance=ticket)
         if form.is_valid():
@@ -213,17 +223,29 @@ def modify_ticket(request, ticket_id):
     else:
         form = forms.ticket_creation_form(instance=ticket)
 
-    return render(request, 'ticket_update.html', {'form': form})
+    return render(request, 'item_update.html', {'form': form, 'heading':'du ticket'})
 
-    # else:
-    #     return render(request, 'access_denied.html')
+@login_required
+def modify_review(request, review_id):
+
+    review = get_object_or_404(Review, id=review_id)
+
+    if request.method == 'POST':
+        form = forms.review_creation_form(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('profile-reviews')
+    else:
+        form = forms.review_creation_form(instance=review)
+
+    return render(request, 'item_update.html', {'form': form, 'heading':'de la critique'})
 
 @login_required
 def delete_review(request, review_id):
 
     try:
         review = Review.objects.get(id=review_id)
-    except: # TODO Associer au type d'erreur
+    except: # TODO Associer au type d'erreur -Transformer en 404
         return render(request, 'home.html')
 
     if request.user == review.user:
@@ -237,7 +259,7 @@ def confirm_deletion_review(request, review_id):
 
     try:
         review = Review.objects.get(id=review_id)
-    except: # TODO Associer au type d'erreur
+    except: # TODO Associer au type d'erreur - Transformer en 404
         return render(request, 'home.html')
 
     review.delete()

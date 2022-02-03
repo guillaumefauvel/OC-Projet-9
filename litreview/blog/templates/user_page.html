@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1> Profil de {{ guest_id.username }} </h1>
+<h1> Profil de {{ guest_id.username }}</h1>
 <b><a href="">S'abonner</a></b>
 
 <!--TODO MODIFY-->
@@ -16,9 +16,9 @@
 {% if tickets %}
     {% for ticket in tickets %}
         {% if ticket.status %}
-            <p><a href="{% url 'ticket-page' ticket.id %}" class="title">{{ ticket }}</a>
+            <p><a href="{% url page_ref ticket.id %}" class="title">{{ ticket }}</a>
                 {% if ticket.publication_year %}
-                ({{ticket.publication_year}})
+                    ({{ticket.publication_year}})
                 {% endif %}
                 par {{ ticket.content_author }} </p>
             <br>
@@ -35,7 +35,7 @@
     {% for review in reviews %}
         <p><a class="title" href="{% url 'show-review' review.id %}">{{ review }}</a>
             {% if review.publication_year %}
-            ({{review.publication_year}})
+                ({{review.publication_year}})
             {% endif %}
             par {{ review.content_author }}
         </p>

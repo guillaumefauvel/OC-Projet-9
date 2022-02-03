@@ -50,10 +50,6 @@ class UserFollows(models.Model):
     class Meta:
         # ensures we don't get multiple UserFollows instances
         # for unique user-user_followed pairs
-        # user_object = ""
-        # following = []
-        # followers = []
-
-        pass
         # unique_together = ('user', 'followed_user', )
+        pass
 

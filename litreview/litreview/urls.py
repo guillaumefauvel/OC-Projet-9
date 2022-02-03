@@ -69,7 +69,7 @@ urlpatterns = [
     path('profile/reviews/', views.profile_reviews, name='profile-reviews'),
     path('profile/reviews/delete/<int:review_id>', views.delete_review, name='delete-review'),
     path('profile/reviews/delete/<int:review_id>/confirm', views.confirm_deletion_review,name='confirm-delete-review'),
-
+    path('profile/reviews/modify/<int:review_id>', views.modify_review, name='modify-review'),
 
     path('user/<int:user_id>', views.user_page, name='user-page'),
 
