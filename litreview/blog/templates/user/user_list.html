@@ -4,9 +4,18 @@
 
 <h1> Utilisateurs : </h1>
 
+<form action="{% if not search_error %}search{% endif %}">
+  <input type="text" name="fname" ><br>
+  <input type="submit" value="Rechercher l'utilisateur">
+</form>
+
+{% if search_error %}
+<p>Le pseudonyme fournis est invalide.</p>
+{% endif %}
+
 {% for user in user_objects %}
 
-<p><h2><a href="{% url 'user-page' user.id %}">{{ user.username }}</a></h2></p>
+  <h3><a href="{% url 'user-page' user.id %}">{{ user.username }}</a></h3>
 
 {% endfor %}
 

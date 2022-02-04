@@ -36,16 +36,16 @@ urlpatterns = [
     # AUTHENTICATION
 
     path('', LoginView.as_view(
-        template_name='authentication/login.html',
-        redirect_authenticated_user=True),name='login'),
+         template_name='authentication/login.html',
+         redirect_authenticated_user=True),name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('change-password/', PasswordChangeView.as_view(
-        template_name='authentication/password_change_form.html'),
-         name='password_change'),
-    path('change-password-done/', PasswordChangeDoneView.as_view(
-        template_name='authentication/password_change_done.html'),
-         name='password_change_done'),
     path('signup/', authentication.views.signup_page, name='signup'),
+    path('profile/change-password/', PasswordChangeView.as_view(
+         template_name='authentication/password_change_form.html'),
+         name='password_change'),
+    path('profile/change-password-done/', PasswordChangeDoneView.as_view(
+         template_name='authentication/password_change_done.html'),
+         name='password_change_done'),
 
     # OTHER
 
@@ -58,6 +58,7 @@ urlpatterns = [
     path('review/<int:review_id>', views.show_review, name='show-review'),
 
     path('userlist/', views.user_list, name='user-list'),
+    path('userlist/search/', views.search_user, name='search-user'),
     path('user/<int:user_id>', views.user_page, name='user-page'),
     path('user/<int:user_id>/follow', views.follow, name='follow-user'),
     path('user/<int:user_id>/unfollow', views.unfollow, name='unfollow-user'),
@@ -77,7 +78,6 @@ urlpatterns = [
 
     path('profile/subscriptions', views.manage_subscriptions, name='subscription-management'),
     path('profile/subscriptions/delete/<int:user_id>', views.unfollow_from_manager, name='delete-subscription'),
-
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

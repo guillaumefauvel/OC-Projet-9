@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
-<h1> Profil de {{ guest_id.username }}</h1>
+
+<h1> Profil de {{ guest_id }} </h1>
+<h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
+
 
 {% if action == 'follow' %}
     <form action='{{guest_id.id}}/{{action}}' method='GET'>
@@ -15,11 +17,13 @@
 {% elif action == 'self' %}
 {% endif %}
 
+
 <!--TODO MODIFY-->
 <style>
 .content-items {display: flex; flex-direction: column;}
 .content-items a.title {font-weight: bold;}
 </style>
+
 
 <h2>Mes tickets</h2>
 <div class="content-items">
@@ -56,8 +60,5 @@
 {% endif %}
 </div>
 
-
-<br>
-
-
 {% endblock %}
+

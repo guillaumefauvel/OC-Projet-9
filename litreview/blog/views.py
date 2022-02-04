@@ -3,6 +3,7 @@ from .models import Ticket, Review
 from authentication.models import User, UserFollows
 from django.contrib.auth.decorators import login_required
 from . import forms
+from django.http import HttpResponse
 
 @login_required
 def home(request):
@@ -63,14 +64,24 @@ def show_review(request, review_id):
 
     return render(request, 'tickets_reviews/show_review.html', context={'review': review_object} )
 
+
 @login_required
 def user_list(request):
 
     user_objects = User.objects.all()
+    search_error = False
+    try:
+        if request.GET['fname']:
+            pass
+        search_error = True
+    except: # TODO Find the exception error
+        pass
 
     context = {
-        'user_objects': user_objects
+        'user_objects': user_objects,
+        'search_error': search_error,
     }
+
     return render(request, "user/user_list.html", context)
 
 
@@ -79,7 +90,14 @@ def profile(request):
 
     user_name = request.user
 
-    return render(request, 'user/profile_view.html', context={'user_name': user_name})
+    followings_number = len(UserFollows.objects.filter(user_id=user_name))
+    followers_number = len(UserFollows.objects.filter(followed_user_id=user_name))
+
+    context = {'user_name': user_name,
+               'followings':followings_number,
+               'followers': followers_number,}
+
+    return render(request, 'user/profile_view.html', context=context)
 
 
 @login_required
@@ -134,12 +152,17 @@ def user_page(request, user_id):
         else:
             action = 'self'
 
+    followings_number = len(UserFollows.objects.filter(user_id=guest))
+    followers_number = len(UserFollows.objects.filter(followed_user_id=guest))
+
     return render(request, 'user/user_page.html', context={
         'guest_id': guest,
         'tickets': tickets,
         'reviews': reviews,
         'page_ref': 'ticket-page',
         'action': action,
+        'followings': followings_number,
+        'followers': followers_number,
     })
 
 
@@ -241,7 +264,6 @@ def confirm_deletion_ticket(request, ticket_id):
 def modify_ticket(request, ticket_id):
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
-
     if not check_ownership(request, ticket):
         redirect('home')
 
@@ -345,3 +367,14 @@ def unfollow_from_manager(request, user_id):
     relation.delete()
 
     return redirect('subscription-management')
+
+@login_required
+def search_user(request):
+
+    researched_user = request.GET['fname']
+    try:
+        researched_user = User.objects.get(username=researched_user)
+    except:
+        return user_list(request)
+    return redirect('user-page', researched_user.id)
+
