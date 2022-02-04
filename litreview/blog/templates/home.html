@@ -27,7 +27,7 @@
                     <h5>{{item.headline}} - {{ item.rating}}/5 </h5>
                     <a href="{% url 'show-review' item.id %}"> Consulter la critique </a>
                 {% else %}
-                    <p class="item-details">Ticket ouvert par {{ item.ticket_author }} le {{ item.time_created }}</p>
+                    <p class="item-details">Ticket ouvert par {{ item.user }} le {{ item.time_created }}</p>
                     <p>{{ item.user_comment }}</p>
                     <a href="{% url 'ticket-page' item.id %}"> Publier une critique </a>
                 {% endif %}

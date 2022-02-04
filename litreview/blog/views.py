@@ -15,7 +15,7 @@ def home(request):
 
         for user in followers:
             try:
-                for ticket in Ticket.objects.filter(ticket_author=user.followed_user_id):
+                for ticket in Ticket.objects.filter(user=user.followed_user_id):
                     tickets.append(ticket)
             except: # TODO Implement DoestNotExist
                 pass
@@ -85,7 +85,7 @@ def profile(request):
 @login_required
 def profile_tickets(request):
 
-    guest_tickets = Ticket.objects.filter(ticket_author=request.user)
+    guest_tickets = Ticket.objects.filter(user=request.user)
     reviews = Review.objects.all()
 
     context = {
@@ -122,7 +122,7 @@ def profile_reviews(request):
 def user_page(request, user_id):
 
     guest = get_object_or_404(User, id=user_id)
-    tickets = Ticket.objects.filter(ticket_author=user_id)
+    tickets = Ticket.objects.filter(user=user_id)
     reviews = Review.objects.filter(user=user_id)
 
     try:
@@ -151,7 +151,7 @@ def create_ticket(request):
         ticket_form = forms.ticket_creation_form(request.POST, request.FILES)
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
-            ticket.ticket_author = request.user
+            ticket.user = request.user
             ticket.save()
             return redirect('ticket-list')
 
@@ -220,10 +220,9 @@ def delete_ticket(request, ticket_id):
                'item_name': 'ce ticket',
                'deletion_path': 'confirm-delete-ticket'}
 
-    if request.user == ticket.ticket_author:
-        return render(request, 'tickets_reviews/item_deletion_confirmation.html', context=context)
-    else:
-        return render(request, 'access_denied.html')
+    if check_ownership(request, ticket):
+        return render(request, 'tickets_reviews/item_deletion_confirmation.html', context)
+    return render(request, 'access_denied.html')
 
 
 @login_required
@@ -231,7 +230,9 @@ def confirm_deletion_ticket(request, ticket_id):
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
-    ticket.delete()
+    if check_ownership(request, ticket):
+        ticket.delete()
+        return redirect('profile-tickets')
 
     return redirect('home')
 
@@ -240,6 +241,9 @@ def confirm_deletion_ticket(request, ticket_id):
 def modify_ticket(request, ticket_id):
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    if not check_ownership(request, ticket):
+        redirect('home')
 
     if request.method == 'POST':
         form = forms.ticket_creation_form(request.POST, instance=ticket)
@@ -251,10 +255,14 @@ def modify_ticket(request, ticket_id):
 
     return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading':'du ticket'})
 
+
 @login_required
 def modify_review(request, review_id):
 
     review = get_object_or_404(Review, id=review_id)
+
+    if not check_ownership(request, review):
+        redirect('home')
 
     if request.method == 'POST':
         form = forms.review_creation_form(request.POST, instance=review)
@@ -266,6 +274,14 @@ def modify_review(request, review_id):
 
     return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading':'de la critique'})
 
+
+def check_ownership(request, object):
+
+    if request.user == object.user:
+        return True
+
+    return False
+
 @login_required
 def delete_review(request, review_id):
 
@@ -275,19 +291,21 @@ def delete_review(request, review_id):
                'item_name': 'cette critique',
                'deletion_path':'confirm-delete-review'}
 
-    if request.user == review.user:
-        return render(request, 'tickets_reviews/item_deletion_confirmation.html', context=context)
-    else:
-        return render(request, 'home.html')
+    if check_ownership(request, review):
+        return render(request, 'tickets_reviews/item_deletion_confirmation.html', context)
+    return render(request, 'access_denied.html')
 
 
 @login_required
 def confirm_deletion_review(request, review_id):
 
     review = get_object_or_404(Review, id=review_id)
-    review.delete()
 
+    if check_ownership(request, review):
+        review.delete()
+        redirect('profile-reviews')
     return redirect('home')
+
 
 @login_required
 def follow(request, user_id):
@@ -296,6 +314,7 @@ def follow(request, user_id):
     UserFollows.objects.create(user_id=request.user, followed_user_id=user_object)
 
     return redirect('user-page', user_id)
+
 
 @login_required
 def unfollow(request, user_id):
@@ -306,6 +325,7 @@ def unfollow(request, user_id):
 
     return redirect('user-page', user_id)
 
+
 @login_required
 def manage_subscriptions(request):
 
@@ -315,6 +335,7 @@ def manage_subscriptions(request):
         user_objects.append(User.objects.get(id=value.followed_user_id.id))
 
     return render(request, 'user/subscription_manager.html', context={'followers': user_objects})
+
 
 @login_required
 def unfollow_from_manager(request, user_id):

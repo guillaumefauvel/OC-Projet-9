@@ -14,9 +14,9 @@
     {% for item in item_list %}
             <p>
                 {% if item.status != True %}
-                    <a> {{ item }} </a>
+                    <a> {{ item.content_reference }} </a>
                 {% else %}
-                    <a href="{% url page_ref item.id %}" class="title">{{ item }}</a>
+                    <a href="{% url page_ref item.id %}" class="title">{{ item.content_reference }}</a>
                 {% endif %}
 
                 {% if item.publication_year %}

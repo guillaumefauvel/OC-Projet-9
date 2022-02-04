@@ -11,7 +11,7 @@ class Ticket(models.Model):
     publication_year = models.IntegerField(verbose_name='Date de publication',
                                            validators=[MinValueValidator(-400),MaxValueValidator(datetime.date.today().year+1)],
                                            blank=True, null=True)
-    ticket_author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     user_comment = models.TextField(verbose_name='Commentaire', max_length=300)
     status = models.BooleanField(default=True)
     time_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -24,7 +24,6 @@ class Ticket(models.Model):
 
     class Meta:
         ordering = ['-time_created']
-
 
 class Review(models.Model):
 

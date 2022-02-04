@@ -12,7 +12,7 @@
         {% if ticket.status %}
             <p>
                 <h2>{{ ticket }}</h2>
-                Ticket ouvert par {{ ticket.ticket_author }} le {{ ticket.time_created}}
+                Ticket ouvert par {{ ticket.user }} le {{ ticket.time_created}}
             </p>
             <a href="{% url 'ticket-page' ticket.id %}">Rédiger une critique</a>
             <p>{{ticket.user_comment}}</p>
