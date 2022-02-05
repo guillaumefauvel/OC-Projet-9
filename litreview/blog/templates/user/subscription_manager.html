@@ -8,6 +8,9 @@
     display: flex;
     gap: 20px;
     }
+    a {
+        text-decoration: none;
+    }
 </style>
 
 <br>
@@ -16,7 +19,7 @@
         <ul>
             <li>
                 <div class="subscription">
-                {{ follower.username }}
+                <a href="{% url 'user-page' follower.id %}" class="title">{{ follower }}</a>
                 <form action='{% url "delete-subscription" follower.id %}' method='GET'>
                 <button type='submit'> Se désabonner </button>
                 </form>

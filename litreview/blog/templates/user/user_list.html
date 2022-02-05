@@ -2,6 +2,10 @@
 
 {% block content %}
 
+<style>
+  .user_element {display: flex; align-self: center; gap: 15px}
+</style>
+
 <h1> Utilisateurs : </h1>
 
 <form action="{% if not search_error %}search{% endif %}">
@@ -13,10 +17,17 @@
 <p>Le pseudonyme fournis est invalide.</p>
 {% endif %}
 
-{% for user in user_objects %}
-
-  <h3><a href="{% url 'user-page' user.id %}">{{ user.username }}</a></h3>
-
+{% for key, values in user_infos.items %}
+  <br><br>
+  <div class="user_element">
+      <a href="{% url 'user-page' values.user_object.id %}">{{ values.user_object.username }}</a>
+      {{ values.ticket_number }} Ticket{{ values.ticket_number|pluralize:" ,s" }} -
+      {{ values.review_number }} Critique{{ values.review_number|pluralize:" ,s" }} -
+      {{ values.follower_number }} Abonné{{ values.follower_number|pluralize:" ,s" }} -
+      {{ values.following_number }} Abonnement{{ values.following_number|pluralize:" ,s" }}
+  </div>
 {% endfor %}
+
+
 
 {% endblock %}

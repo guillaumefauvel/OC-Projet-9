@@ -68,7 +68,6 @@ def show_review(request, review_id):
 @login_required
 def user_list(request):
 
-    user_objects = User.objects.all()
     search_error = False
     try:
         if request.GET['fname']:
@@ -77,9 +76,19 @@ def user_list(request):
     except: # TODO Find the exception error
         pass
 
+    user_infos = {}
+    for author in User.objects.all():
+        user_infos[author.id] = {
+            'user_object': author,
+            'ticket_number': len(Ticket.objects.filter(user=author)),
+            'review_number': len(Review.objects.filter(user=author)),
+            'follower_number': len(UserFollows.objects.filter(followed_user_id=author)),
+            'following_number': len(UserFollows.objects.filter(user_id=author)),
+        }
+
     context = {
-        'user_objects': user_objects,
         'search_error': search_error,
+        'user_infos': user_infos,
     }
 
     return render(request, "user/user_list.html", context)
