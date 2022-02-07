@@ -9,28 +9,27 @@
 {% if ticket_objects %}
     {% for ticket in ticket_objects %}
         {% if ticket.status %}
-            <div class="item">
+                {% if ticket.content_picture %}
+                    <div class="post">
+                        <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
+                    </div>
+                {% endif %}
                 <div class="reference">
                     <h2>
                         {{ ticket.content_reference }}
                         {% if ticket.publication_year %}
-                        ({{ticket.publication_year}})
+                            ({{ticket.publication_year}})
                         {% endif %}
                     </h2>
-                    <p>- {{ ticket.content_author }}</p>
+                    <h4> &nbsp; de {{ ticket.content_author }}</h4>
                 </div>
-                <div class="post-infos">
+                <p>{{ticket.user_comment}}</p>
+                <a href="{% url 'ticket-page' ticket.id %}">Rédiger une critique</a>
+                <br><br>
+                <div class="item-details">
                     Ticket ouvert par {{ ticket.user }} le {{ ticket.time_created}}
                 </div>
-                <a href="{% url 'ticket-page' ticket.id %}">Rédiger une critique</a>
-                <p>{{ticket.user_comment}}</p>
-                {% if ticket.content_picture %}
-                <div class="post">
-                    <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
-                </div>
-            </div>
-        {% endif %}
-        <br>
+                <br><br>
         {% endif %}
     {% endfor %}
 {% else %}

@@ -43,17 +43,48 @@ html ::-webkit-scrollbar {
 }
 
 .main {
+    diplay: flex;
+    justify-content: center;
+    text-align: center;
     margin-top: 3vw;
     padding: 20px;
-    margin-left: 40%;
     margin-right: auto;
 
 }
 
+.item-details {
+    font-style: italic;
+    font-size: 0.65em;
+}
+
+.review-text {
+    margin-right: 25%;
+    margin-left: 25%;
+}
+
 .reference {
     display: flex;
-    align-items: center;
-    gap: 5px
-  }
+    justify-content: center;
+    text-align: center;
+    align-items: center
+}
 
+em {
+    font-weight: bold;
+    font-style: normal;
+}
 
+a {
+    text-decoration: none;
+}
+
+.user-profile {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 30px;
+}
+
+li {
+    list-style-type: none;
+}

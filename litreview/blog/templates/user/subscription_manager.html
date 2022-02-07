@@ -2,32 +2,17 @@
 
 {% block content %}
 
-<!--TODO - Modify CSS-->
-<style>
-    .subscription {
-    display: flex;
-    gap: 20px;
-    }
-    a {
-        text-decoration: none;
-    }
-</style>
-
 <h1> Mes abonnements </h1>
-
-<br>
+<br><br>
 {% if followers %}
     {% for follower in followers %}
-        <ul>
-            <li>
-                <div class="subscription">
+                <div class="user-profile">
                 <a href="{% url 'user-page' follower.id %}" class="user-infos">{{ follower }}</a>
                 <form action='{% url "delete-subscription" follower.id %}' method='GET'>
                 <button type='submit'> Se désabonner </button>
                 </form>
                 </div>
-            </li>
-        </ul>
+                <br>
     {% endfor %}
 {% else %}
     <p> Vous ne suivez personne pour le moment </p>

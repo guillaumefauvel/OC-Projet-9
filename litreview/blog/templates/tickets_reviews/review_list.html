@@ -7,34 +7,30 @@
 
 {% if review_objects %}
         {% for review in review_objects %}
-            <div>
-                    <div class="reference">
-                        <h2>
-                            {{ review.content_reference }}
-                            {% if review.publication_year %}
-                            ({{review.publication_year}})
-                            {% endif %}
-                        </h2>
-                        <p>- {{ review.content_author }} </p>
-                    </div>
-
-                    <h4>
-                        <a href="{{ review.id }}">{{ review.headline }}</a> -
-                        {{ review.rating}}/5
-                    </h4>
-
-                    <div class="post-infos">
-                        <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
-                    </div>
-
-                {% if review.content_picture %}
-                    <div class="item-picture">
-                        <img src="{{ review.content_picture.url }}" class="ticket-picture">
-                    </div>
-                {% endif %}
+            {% if review.content_picture %}
+                <div class="item-picture">
+                    <img src="{{ review.content_picture.url }}" class="ticket-picture">
+                </div>
+            {% endif %}
+            <div class="reference">
+                <h2>
+                    {{ review.content_reference }}
+                    {% if review.publication_year %}
+                        ({{review.publication_year}})
+                    {% endif %}
+                </h2>
+                <h4> &nbsp;de {{ review.content_author }} </h4>
             </div>
+            <h4>
+                <a href="{{ review.id }}">{{ review.headline }}</a> -
+                {{ review.rating}}/5
+            </h4>
+            <div class="item-details">
+                <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
+            </div>
+            <br><br>
         {% endfor %}
-    {% else %}
+{% else %}
         <p> Pour le moment, aucune critique n'a été publiée. </p>
 {% endif %}
 

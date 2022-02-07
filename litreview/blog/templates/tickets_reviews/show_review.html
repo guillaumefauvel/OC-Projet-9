@@ -2,36 +2,32 @@
 
 {% block content %}
 
-<style>
-    .reference {display: flex; align-items: center; gap: 15px}
-    .review-text {max-width: 50%}
-    a {text-decoration: none}
-</style>
 
-<div class="reference">
-    <h1>
-    {{ review.content_reference }}
-    {% if review.publication_year %}
-            ({{review.publication_year}})
+<div class="item">
+    <div class="reference">
+        <h1>
+        {{ review.content_reference }}
+        {% if review.publication_year %}
+                ({{review.publication_year}})
+        {% endif %}
+        </h1>
+        <h4>de {{ review.content_author }}</h4>
+    </div>
+
+    {% if review.content_picture %}
+        <img src="{{ review.content_picture.url }}" class="ticket-picture">
     {% endif %}
-    </h1>
-    <p>- {{ review.content_author }}</p>
-</div>
 
-{% if review.content_picture %}
-    <img src="{{ review.content_picture.url }}" class="ticket-picture">
-{% endif %}
-
-<div class="users-infos">
-    <p>Notes : {{ review.rating }}</p>
-    <p>Titre de la critique : {{ review.headline }}</p>
-<!--    TODO - Rajouter lien vers l'auteur -->
-    <p>Auteur de la critique :
-        <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
-    </p>
-    <p class="review-text">
-       {{ review.body }}
-    </p>
+    <div class="users-infos">
+        <p><em>Notes :</em> {{ review.rating }}</p>
+        <p><em>Titre de la critique </em>: {{ review.headline }}</p>
+        <p><em>Auteur de la critique </em>:
+            <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
+        </p>
+        <p class="review-text">
+           {{ review.body }}
+        </p>
+    </div>
 </div>
 
 

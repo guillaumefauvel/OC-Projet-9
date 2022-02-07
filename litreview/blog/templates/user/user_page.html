@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
 <h1> Profil de {{ guest_id }} </h1>
 <h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
-
 
 {% if action == 'follow' %}
     <form action='{{guest_id.id}}/{{action}}' method='GET'>
@@ -17,24 +15,17 @@
 {% elif action == 'self' %}
 {% endif %}
 
-
-<!--TODO MODIFY-->
-<style>
-.content-items {display: flex; flex-direction: column;}
-.content-items a.title {font-weight: bold;}
-</style>
-
-
+<br>
 <h2>Mes tickets</h2>
 <div class="content-items">
 {% if tickets %}
     {% for ticket in tickets %}
         {% if ticket.status %}
-            <p><a href="{% url page_ref ticket.id %}" class="title">{{ ticket }}</a>
+            <p><a href="{% url page_ref ticket.id %}">{{ ticket }}</a>
                 {% if ticket.publication_year %}
                     ({{ticket.publication_year}})
                 {% endif %}
-                par {{ ticket.content_author }} </p>
+                de {{ ticket.content_author }} </p>
             <br>
         {% endif %}
     {% endfor %}
@@ -47,11 +38,11 @@
 <div class="content-items">
 {% if reviews %}
     {% for review in reviews %}
-        <p><a class="title" href="{% url 'show-review' review.id %}">{{ review }}</a>
+        <p><a href="{% url 'show-review' review.id %}">{{ review }}</a>
             {% if review.publication_year %}
                 ({{review.publication_year}})
             {% endif %}
-            par {{ review.content_author }}
+            de {{ review.content_author }}
         </p>
         <br>
     {% endfor %}

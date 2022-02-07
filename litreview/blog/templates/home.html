@@ -1,41 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<style>
-    .reference {display: flex; align-items: center; gap: 5px}
-</style>
-
 <h1> Flux </h1>
 
 {% if publications %}
     {% for item in publications %}
-            <div class="reference">
-                <h2>
-                {{ item.content_reference }}
-                {% if item.publication_year %}
-                        ({{item.publication_year}})
-                {% endif %}
-                </h2>
-                <p>- {{ item.content_author }}</p>
-            </div>
+        {% if item.content_picture %}
+            <img src="{{ item.content_picture.url }}" class="ticket-picture">
+        {% endif %}
+        <div class="reference">
+            <h2>
+            {{ item.content_reference }}
+            {% if item.publication_year %}
+                ({{item.publication_year}})
+            {% endif %}
+            </h2>
+            <h4> &nbsp; de {{ item.content_author }}</h4>
+        </div>
 
-            <div class="publication-data">
-                {% if item.to_class_name == 'Review' %}
-                    <p class="item-details">Critique publié par {{ item.user }} le {{ item.time_created }}</p>
-                    <h5>{{item.headline}} - {{ item.rating}}/5 </h5>
-                    <a href="{% url 'show-review' item.id %}"> Consulter la critique </a>
-                {% else %}
-                    <p class="item-details">Ticket ouvert par {{ item.user }} le {{ item.time_created }}</p>
-                    <p>{{ item.user_comment }}</p>
-                    <a href="{% url 'ticket-page' item.id %}"> Publier une critique </a>
-                {% endif %}
-            </div>
-
-            <div class="content">
-                {% if item.content_picture %}
-                    <img src="{{ item.content_picture.url }}" class="ticket-picture">
-                {% endif %}
-            </div>
+        <div class="publication-data">
+            {% if item.to_class_name == 'Review' %}
+                <h5>{{item.headline}} - {{ item.rating}}/5 </h5>
+                <a href="{% url 'show-review' item.id %}"> Consulter la critique </a>
+                <p class="item-details">Critique publié par {{ item.user }} le {{ item.time_created }}</p>
+                <br><br>
+            {% else %}
+                <h5>{{ item.user_comment }}</h5>
+                <a href="{% url 'ticket-page' item.id %}"> Publier une critique </a>
+                <p class="item-details">Ticket ouvert par {{ item.user }} le {{ item.time_created }}</p>
+                <br><br>
+            {% endif %}
+        </div>
     {% endfor %}
 
 {% else %}
