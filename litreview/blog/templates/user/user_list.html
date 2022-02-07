@@ -21,6 +21,7 @@
   <br><br>
   <div class="user_element">
       <a href="{% url 'user-page' values.user_object.id %}">{{ values.user_object.username }}</a>
+
       {{ values.ticket_number }} Ticket{{ values.ticket_number|pluralize:" ,s" }} -
       {{ values.review_number }} Critique{{ values.review_number|pluralize:" ,s" }} -
       {{ values.follower_number }} Abonné{{ values.follower_number|pluralize:" ,s" }} -

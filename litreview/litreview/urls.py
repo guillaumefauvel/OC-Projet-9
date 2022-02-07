@@ -17,14 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-import helpers.views
-
-
 from django.contrib.auth.views import (LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView)
-
 import authentication.views
 from blog import views
-
+import helpers.views
 
 urlpatterns = [
 
@@ -47,7 +43,7 @@ urlpatterns = [
          template_name='authentication/password_change_done.html'),
          name='password_change_done'),
 
-    # OTHER
+    # Tickets / Review
 
     path('ticket/creation', views.create_ticket, name='ticket-creation'),
     path('ticket/list', views.ticket_list_view, name='ticket-list'),
@@ -57,19 +53,21 @@ urlpatterns = [
     path('review/list', views.review_list_view, name='review-list'),
     path('review/<int:review_id>', views.show_review, name='show-review'),
 
+    # Users
+
     path('userlist/', views.user_list, name='user-list'),
     path('userlist/search/', views.search_user, name='search-user'),
     path('user/<int:user_id>', views.user_page, name='user-page'),
     path('user/<int:user_id>/follow', views.follow, name='follow-user'),
     path('user/<int:user_id>/unfollow', views.unfollow, name='unfollow-user'),
 
-    path('profile/', views.profile, name='profile'),
+    # Profile management
 
+    path('profile/', views.profile, name='profile'),
     path('profile/tickets/', views.profile_tickets, name='profile-tickets'),
     path('profile/tickets/delete/<int:ticket_id>', views.delete_ticket, name='delete-ticket'),
     path('profile/tickets/delete/<int:ticket_id>/confirm', views.confirm_deletion_ticket, name='confirm-delete-ticket'),
     path('profile/tickets/modify/<int:ticket_id>', views.modify_ticket, name='modify-ticket'),
-
 
     path('profile/reviews/', views.profile_reviews, name='profile-reviews'),
     path('profile/reviews/delete/<int:review_id>', views.delete_review, name='delete-review'),
@@ -83,3 +81,5 @@ urlpatterns = [
 
 handler404 = "helpers.views.handle_not_found"
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+urlpatterns += staticfiles_urlpatterns()

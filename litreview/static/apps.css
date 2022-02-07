@@ -1,0 +1,59 @@
+html {
+    font-family: Arial;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+html ::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar {
+    height: 3vw; /* Full-height: remove this if you want "auto" height */
+    width: 100%; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: brown;
+    color:  #ffffe6;
+    padding-top: 15px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: horizontal;
+    justify-content: flex-end;
+    gap: 25px;
+}
+
+.title {
+    position: absolute;
+    left: 1vw;
+    top: 1vw;
+}
+
+/* The navigation menu links */
+.sidebar a {
+    text-decoration: none;
+    color:  #ffffe6;
+}
+
+.sidebar a:hover {
+    color: gold;
+}
+
+.main {
+    margin-top: 3vw;
+    padding: 20px;
+    margin-left: 40%;
+    margin-right: auto;
+
+}
+
+.reference {
+    display: flex;
+    align-items: center;
+    gap: 5px
+  }
+
+

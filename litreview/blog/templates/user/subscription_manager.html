@@ -13,13 +13,15 @@
     }
 </style>
 
+<h1> Mes abonnements </h1>
+
 <br>
 {% if followers %}
     {% for follower in followers %}
         <ul>
             <li>
                 <div class="subscription">
-                <a href="{% url 'user-page' follower.id %}" class="title">{{ follower }}</a>
+                <a href="{% url 'user-page' follower.id %}" class="user-infos">{{ follower }}</a>
                 <form action='{% url "delete-subscription" follower.id %}' method='GET'>
                 <button type='submit'> Se désabonner </button>
                 </form>
@@ -32,3 +34,4 @@
 {% endif %}
 
 {% endblock %}
+

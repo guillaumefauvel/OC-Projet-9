@@ -3,6 +3,11 @@ img {
   height: auto
 }
 
+html {
+    font-family: Arial;
+    background-color: blue;
+}
+
 a {
     text-decoration: none;
 }

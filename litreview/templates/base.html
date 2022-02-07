@@ -3,22 +3,17 @@
 
     <head>
         <title>LitReview</title>
-        <link rel="stylesheet" href="{% static 'app.css' %}">
+        <link rel="stylesheet" href="{% static 'apps.css' %}">
     </head>
 
     <body>
         <div class="sidebar">
             {% if user.is_authenticated %}
-                {% if user.profile_photo %}
-                    <img class="avatar" src="{{ user.profile_photo.url }}">
-                {% endif %}
-
-                <h1><a href="{% url 'home' %}">LitReview</a></h1>
-                <p>Bonjour, {{ user }} !</p>
+                <h1><a class="title" href="{% url 'home' %}">LitReview</a></h1>
                 <br>
                 <p><a href="{% url 'home' %}">Accueil</a></p>
-                <p><a href="{% url 'ticket-list' %}">Voir les tickets ouvert</a></p>
-                <p><a href="{% url 'review-list' %}">Consulter les critiques</a></p>
+                <p><a href="{% url 'ticket-list' %}">Tickets ouverts</a></p>
+                <p><a href="{% url 'review-list' %}">Critiques</a></p>
 
                 <p><a href="{% url 'ticket-creation' %}">Créer un ticket</a></p>
                 <p><a href="{% url 'review-creation' %}">Publier une critique</a></p>
@@ -26,6 +21,7 @@
 
                 <p><a href="{% url 'profile' %}">Consulter votre profil</a></p>
                 <p><a href="{% url 'logout' %}">Se déconnecter</a></p>
+
             {% else %}
                 <h1>LitReview</h1>
             {% endif %}

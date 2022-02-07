@@ -2,24 +2,37 @@
 
 {% block content %}
 
-<style>.ticket-picture {max-width: 15%;}</style>  <!--TODO MODIFY-->
 
 <h1> Critiques publiées </h1>
 
 {% if review_objects %}
         {% for review in review_objects %}
-            <p>
-                <h2>
-                    {{ review.content_reference }} - <a href="{{ review.id }}">{{ review.headline }}</a> -
-                    {{ review.rating}}/5
-                </h2>
-                <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
-            </p>
+            <div>
+                    <div class="reference">
+                        <h2>
+                            {{ review.content_reference }}
+                            {% if review.publication_year %}
+                            ({{review.publication_year}})
+                            {% endif %}
+                        </h2>
+                        <p>- {{ review.content_author }} </p>
+                    </div>
+
+                    <h4>
+                        <a href="{{ review.id }}">{{ review.headline }}</a> -
+                        {{ review.rating}}/5
+                    </h4>
+
+                    <div class="post-infos">
+                        <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
+                    </div>
+
                 {% if review.content_picture %}
-                    <div>
+                    <div class="item-picture">
                         <img src="{{ review.content_picture.url }}" class="ticket-picture">
                     </div>
                 {% endif %}
+            </div>
         {% endfor %}
     {% else %}
         <p> Pour le moment, aucune critique n'a été publiée. </p>
