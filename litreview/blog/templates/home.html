@@ -2,6 +2,7 @@
 {% block content %}
 
 <h1> Flux </h1>
+<hr><br><br>
 
 {% if publications %}
     {% for item in publications %}
@@ -15,20 +16,23 @@
                 ({{item.publication_year}})
             {% endif %}
             </h2>
-            <h4> &nbsp; de {{ item.content_author }}</h4>
+            <em> &nbsp; de {{ item.content_author }}</em>
         </div>
-
-        <div class="publication-data">
+        <div class="user_element">
             {% if item.to_class_name == 'Review' %}
-                <h5>{{item.headline}} - {{ item.rating}}/5 </h5>
-                <a href="{% url 'show-review' item.id %}"> Consulter la critique </a>
+                <br>
+                <form action="{% url 'show-review' item.id %}">
+                  <input class="publish" type="submit" value="'{{item.headline}}' - {{ item.rating}}/5">
+                </form>
                 <p class="item-details">Critique publié par {{ item.user }} le {{ item.time_created }}</p>
-                <br><br>
+                <br><hr><br>
             {% else %}
                 <h5>{{ item.user_comment }}</h5>
-                <a href="{% url 'ticket-page' item.id %}"> Publier une critique </a>
+                <form action="{% url 'ticket-page' item.id %}">
+                  <input class="publish" type="submit" value="Publier une critique">
+                </form>
                 <p class="item-details">Ticket ouvert par {{ item.user }} le {{ item.time_created }}</p>
-                <br><br>
+                <br><hr><br>
             {% endif %}
         </div>
     {% endfor %}
@@ -37,7 +41,5 @@
     <p> Votre flux est vide, abonnez-vous à un quelqu'un ayant
         déjà publié du contenu afin d'alimenter votre flux.</p>
 {% endif %}
-
-
 
 {% endblock content %}

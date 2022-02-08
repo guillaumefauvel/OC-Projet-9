@@ -249,11 +249,13 @@ def delete_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
     context = {'item_id': ticket_id,
+               'item': ticket,
                'item_name': 'ce ticket',
                'deletion_path': 'confirm-delete-ticket'}
 
     if check_ownership(request, ticket):
         return render(request, 'tickets_reviews/item_deletion_confirmation.html', context)
+
     return render(request, 'access_denied.html')
 
 
@@ -319,11 +321,13 @@ def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
 
     context = {'item_id': review_id,
+               'item': review,
                'item_name': 'cette critique',
                'deletion_path':'confirm-delete-review'}
 
     if check_ownership(request, review):
         return render(request, 'tickets_reviews/item_deletion_confirmation.html', context)
+
     return render(request, 'access_denied.html')
 
 

@@ -4,6 +4,7 @@
 
 
 <h1> Critiques publiées </h1>
+<hr><br><br>
 
 {% if review_objects %}
         {% for review in review_objects %}
@@ -21,14 +22,19 @@
                 </h2>
                 <h4> &nbsp;de {{ review.content_author }} </h4>
             </div>
-            <h4>
-                <a href="{{ review.id }}">{{ review.headline }}</a> -
-                {{ review.rating}}/5
-            </h4>
+
+
+            <br>
+            <form action="{% url 'show-review' review.id %}">
+              <input class="publish" type="submit" value="'{{review.headline}}' - {{ review.rating}}/5">
+            </form>
+
             <div class="item-details">
                 <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
             </div>
-            <br><br>
+            <br><hr><br>
+
+
         {% endfor %}
 {% else %}
         <p> Pour le moment, aucune critique n'a été publiée. </p>

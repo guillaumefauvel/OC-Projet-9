@@ -35,7 +35,8 @@ html ::-webkit-scrollbar {
 /* The navigation menu links */
 .sidebar a {
     text-decoration: none;
-    color:  #ffffe6;
+    color: #ffffe6;
+    font-weight: bold;
 }
 
 .sidebar a:hover {
@@ -66,7 +67,10 @@ html ::-webkit-scrollbar {
     display: flex;
     justify-content: center;
     text-align: center;
-    align-items: center
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: -10px;
+    height: 2vw;
 }
 
 em {
@@ -87,4 +91,13 @@ a {
 
 li {
     list-style-type: none;
+}
+
+hr {
+    width: 15%;
+}
+
+.publish {
+  border-radius: 3px;
+  background-color: white;
 }

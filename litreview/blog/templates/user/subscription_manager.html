@@ -3,13 +3,14 @@
 {% block content %}
 
 <h1> Mes abonnements </h1>
-<br><br>
+<hr><br><br>
+
 {% if followers %}
     {% for follower in followers %}
                 <div class="user-profile">
-                <a href="{% url 'user-page' follower.id %}" class="user-infos">{{ follower }}</a>
+                <a href="{% url 'user-page' follower.id %}" class="user-infos"><em>{{ follower }}</em></a>
                 <form action='{% url "delete-subscription" follower.id %}' method='GET'>
-                <button type='submit'> Se désabonner </button>
+                <button class="publish" type='submit'> Se désabonner </button>
                 </form>
                 </div>
                 <br>

@@ -4,7 +4,8 @@
 
 <h1> Profil de {{ user }} </h1>
 <h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
-<br><br>
+<hr><br><br>
+
 <a href="{% url 'profile-tickets' %}">Mes tickets</a>
 <br><br>
 <a href="{% url 'profile-reviews' %}">Mes critiques</a>

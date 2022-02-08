@@ -2,17 +2,21 @@
 
 {% block content %}
 
+<br><br>
 
-<br><br><br><br><br><br>
+<p><em>{{ item.content_reference }}</em> de {{ item.content_author }}</p>
+<br>
+
 <a>Confirmer vous la suppression de {{ item_name }} ? </a>
 <br><br>
+
 <div class="choices">
     <form action="{% url deletion_path item_id %}">
-        <input type="submit" value="Supprimer" />
+        <input class="publish" type="submit" value="Supprimer" />
     </form>
 
     <form action="{% url 'home' %}">
-        <input type="submit" value="Annuler" />
+        <input class="publish" type="submit" value="Annuler" />
     </form>
 </div>
 

@@ -3,6 +3,7 @@
 
 <h1> Profil de {{ guest_id }} </h1>
 <h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
+<hr><br><br>
 
 {% if action == 'follow' %}
     <form action='{{guest_id.id}}/{{action}}' method='GET'>
@@ -17,6 +18,7 @@
 
 <br>
 <h2>Mes tickets</h2>
+
 <div class="content-items">
 {% if tickets %}
     {% for ticket in tickets %}

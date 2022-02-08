@@ -4,11 +4,12 @@
 
 
 <h1> Utilisateurs : </h1>
+<hr><br><br>
 
 <form action="{% if not search_error %}search{% endif %}">
   <input type="text" name="fname" ><br>
     <br>
-  <input type="submit" value="Rechercher l'utilisateur">
+  <input class="publish" type="submit" value="Rechercher l'utilisateur">
 </form>
 
 {% if search_error %}
@@ -18,7 +19,7 @@
 {% for key, values in user_infos.items %}
   <br><br><br>
   <div class="user_element">
-      <a href="{% url 'user-page' values.user_object.id %}">{{ values.user_object.username }}</a>
+      <a href="{% url 'user-page' values.user_object.id %}"><em>{{ values.user_object.username }}</em></a>
 
       &nbsp;-&nbsp;{{ values.ticket_number }} Ticket{{ values.ticket_number|pluralize:" ,s" }} -
       {{ values.review_number }} Critique{{ values.review_number|pluralize:" ,s" }} -
