@@ -11,8 +11,10 @@
                 ({{review.publication_year}})
         {% endif %}
         </h1>
-        <h4>de {{ review.content_author }}</h4>
+        <h4>&nbsp;de {{ review.content_author }}</h4>
     </div>
+
+    <br><br>
 
     {% if review.content_picture %}
         <img src="{{ review.content_picture.url }}" class="ticket-picture">

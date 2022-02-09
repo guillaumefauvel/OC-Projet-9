@@ -14,6 +14,13 @@ def home(request):
         tickets = []
         reviews = []
 
+        for review in Review.objects.filter(user=request.user):
+            reviews.append(review)
+        for ticket in Ticket.objects.filter(user=request.user):
+            tickets.append(ticket)
+            if ticket.status == False:
+                reviews.append(Review.objects.get(ticket=ticket))
+
         for user in followers:
             try:
                 for ticket in Ticket.objects.filter(user=user.followed_user_id):
@@ -26,6 +33,7 @@ def home(request):
                     reviews.append(review)
             except: # TODO Implement DoestNotExist
                 pass
+
 
         publications = tickets + reviews
         publications = sorted(publications, key=lambda x: x.time_created, reverse=True)
@@ -168,6 +176,7 @@ def user_page(request, user_id):
         'guest_id': guest,
         'tickets': tickets,
         'reviews': reviews,
+        'foreign_reviews': Review.objects.all(),
         'page_ref': 'ticket-page',
         'action': action,
         'followings': followings_number,
@@ -220,6 +229,12 @@ def review_from_ticket(request, ticket_id):
     """This is a review query linked to a ticket"""
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    try:
+        Review.objects.get(ticket=ticket)
+        return redirect('home')
+    except:
+        pass
 
     review_form = forms.linked_review_form()
 

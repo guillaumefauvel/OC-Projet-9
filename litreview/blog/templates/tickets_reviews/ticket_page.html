@@ -9,8 +9,10 @@
             ({{ticket_id.publication_year}})
     {% endif %}
     </h1>
-    <p>- {{ ticket_id.content_author }}</p>
+    <h3>&nbsp; de {{ ticket_id.content_author }}</h3>
 </div>
+
+<br><br>
 
 {% if ticket_id.content_picture %}
     <img src="{{ ticket_id.content_picture.url }}">

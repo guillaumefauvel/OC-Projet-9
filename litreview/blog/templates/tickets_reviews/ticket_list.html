@@ -10,37 +10,34 @@
 {% if ticket_objects %}
     {% for ticket in ticket_objects %}
         {% if ticket.status %}
-                {% if ticket.content_picture %}
-                    <div class="post">
-                        <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
-                    </div>
-                {% endif %}
-                <div class="reference">
-                    <h2>
-                        {{ ticket.content_reference }}
-                        {% if ticket.publication_year %}
-                            ({{ticket.publication_year}})
-                        {% endif %}
-                    </h2>
-                    <h4> &nbsp; de {{ ticket.content_author }}</h4>
+            {% if ticket.content_picture %}
+                <div class="post">
+                    <img src="{{ ticket.content_picture.url }}" class="ticket-picture">
                 </div>
-                <p>{{ticket.user_comment}}</p>
-                <form action="{% url 'ticket-page' ticket.id %}">
-                  <input class="publish" type="submit" value="Publier une critique">
-                </form>
-                <br>
-                <div class="item-details">
-                    Ticket ouvert par {{ ticket.user }} le {{ ticket.time_created}}
-                </div>
-                <br><hr><br>
-
-
-
+            {% endif %}
+            <div class="reference">
+                <h2>
+                    {{ ticket.content_reference }}
+                    {% if ticket.publication_year %}
+                        ({{ticket.publication_year}})
+                    {% endif %}
+                </h2>
+                <h4> &nbsp; de {{ ticket.content_author }}</h4>
+            </div>
+            <p>{{ticket.user_comment}}</p>
+            <form action="{% url 'ticket-page' ticket.id %}">
+              <input class="publish" type="submit" value="Publier une critique">
+            </form>
+            <br>
+            <div class="item-details">
+                Ticket ouvert par <a href="{% url 'user-page' ticket.user.id %}">{{ ticket.user }}</a>
+                le {{ ticket.time_created}}
+            </div>
+            <br><hr><br>
         {% endif %}
     {% endfor %}
 {% else %}
     <p> Il n'y pas de ticket ouvert.</p>
 {% endif %}
-
 
 {% endblock %}

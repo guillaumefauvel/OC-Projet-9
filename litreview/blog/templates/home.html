@@ -24,14 +24,21 @@
                 <form action="{% url 'show-review' item.id %}">
                   <input class="publish" type="submit" value="'{{item.headline}}' - {{ item.rating}}/5">
                 </form>
-                <p class="item-details">Critique publié par {{ item.user }} le {{ item.time_created }}</p>
+                <p class="item-details">Critique publié par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a>
+                    le {{ item.time_created }}
+                    {% if item.ticket.user %}
+                        en réponse à <a href="{% url 'user-page' item.ticket.user.id %}">{{ item.ticket.user }}</a>
+                    {% endif %}
+                </p>
                 <br><hr><br>
             {% else %}
                 <h5>{{ item.user_comment }}</h5>
-                <form action="{% url 'ticket-page' item.id %}">
-                  <input class="publish" type="submit" value="Publier une critique">
-                </form>
-                <p class="item-details">Ticket ouvert par {{ item.user }} le {{ item.time_created }}</p>
+                {% if item.status %}
+                    <form action="{% url 'ticket-page' item.id %}">
+                      <input class="publish" type="submit" value="Publier une critique">
+                    </form>
+                {% endif %}
+                <p class="item-details">Ticket ouvert par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a> le {{ item.time_created }}</p>
                 <br><hr><br>
             {% endif %}
         </div>

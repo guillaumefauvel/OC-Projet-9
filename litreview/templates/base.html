@@ -10,20 +10,16 @@
         <div class="sidebar">
             {% if user.is_authenticated %}
                 <h1><a class="title" href="{% url 'home' %}">LitReview</a></h1>
-                <br>
                 <p><a href="{% url 'home' %}">Accueil</a></p>
                 <p><a href="{% url 'ticket-list' %}">Tickets ouverts</a></p>
                 <p><a href="{% url 'review-list' %}">Critiques</a></p>
-
                 <p><a href="{% url 'ticket-creation' %}">Créer un ticket</a></p>
                 <p><a href="{% url 'review-creation' %}">Publier une critique</a></p>
                 <p><a href="{% url 'user-list' %}">Chercher un utilisateur</a></p>
-
-                <p><a href="{% url 'profile' %}">Consulter votre profil</a></p>
+                <p><a href="{% url 'profile' %}">Profil</a></p>
                 <p><a href="{% url 'logout' %}">Se déconnecter</a></p>
-
             {% else %}
-                <h1>LitReview</h1>
+                <h1 class="title">LitReview</h1>
             {% endif %}
         </div>
         <div class="main">

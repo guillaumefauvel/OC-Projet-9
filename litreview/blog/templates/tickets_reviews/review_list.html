@@ -22,22 +22,21 @@
                 </h2>
                 <h4> &nbsp;de {{ review.content_author }} </h4>
             </div>
-
-
             <br>
             <form action="{% url 'show-review' review.id %}">
               <input class="publish" type="submit" value="'{{review.headline}}' - {{ review.rating}}/5">
             </form>
-
             <div class="item-details">
-                <p>Publié par {{ review.user }} le {{ review.time_created}}</p>
+                <p>Publié par <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
+                    le {{ review.time_created}}
+                    {% if review.ticket.user %}
+                        en réponse à <a href="{% url 'user-page' review.ticket.user.id %}">{{ review.ticket.user }}</a>
+                    {% endif %}
+                </p>
             </div>
             <br><hr><br>
-
-
         {% endfor %}
 {% else %}
         <p> Pour le moment, aucune critique n'a été publiée. </p>
 {% endif %}
-
 {% endblock %}

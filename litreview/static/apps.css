@@ -30,6 +30,7 @@ html ::-webkit-scrollbar {
     position: absolute;
     left: 1vw;
     top: 1vw;
+    bottom: 1vw;
 }
 
 /* The navigation menu links */
