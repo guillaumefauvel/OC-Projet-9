@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
+{% block title %}LitReview - {{ guest_id }}{% endblock title %}
+
 {% block content %}
 
 <h1> Profil de {{ guest_id }} </h1>
 <h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
+{% if guest_id.description %}
+    <hr>
+    <p>{{ guest_id.description }}</p>
+{% endif %}
+
 <hr><br><br>
 
 {% if action == 'follow' %}

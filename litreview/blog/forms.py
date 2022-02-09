@@ -1,5 +1,6 @@
 from django import forms
 from blog.models import Ticket, Review
+from authentication.models import User
 
 
 class ticket_creation_form(forms.ModelForm):
@@ -20,4 +21,7 @@ class linked_review_form(forms.ModelForm):
         fields = ('rating', 'headline','body')
 
 
-
+class add_description(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('description',)

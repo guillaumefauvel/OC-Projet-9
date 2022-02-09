@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
+{% block title %}LitReview - Mon Profil{% endblock title %}
 
 {% block content %}
 
 <h1> Profil de {{ user }} </h1>
 <h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
+{% if user.description %}
+    <hr>
+    <p>
+        {{ user.description }}
+    </p>
+{% endif %}
 <hr><br><br>
 
 <a href="{% url 'profile-tickets' %}">Mes tickets</a>
@@ -11,6 +18,8 @@
 <a href="{% url 'profile-reviews' %}">Mes critiques</a>
 <br><br>
 <a href="{% url 'subscription-management' %}">Gérer mes abonnements</a>
+<br><br>
+<a href="{% url 'description-modification' %}">Modification ma description</a>
 <br><br>
 <a href="{% url 'password_change' %}">Changer mon mots de passe</a>
 <br><br>

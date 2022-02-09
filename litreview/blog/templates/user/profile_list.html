@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %}LitReview - {{ heading_one }}{% endblock title %}
 
 {% block content %}
 
@@ -11,7 +12,11 @@
 {% if item_list %}
     {% for item in item_list %}
             <p>
-                <a href="{% url page_ref item.id %}" >{{ item.content_reference }}</a>
+                {% if item.status == False and item.to_class_name == "Ticket" %}
+                    <a> {{item.content_reference }}</a>
+                {% else %}
+                    <a href="{% url page_ref item.id %}" >{{ item.content_reference }}</a>
+                {% endif %}
 
                 {% if item.publication_year %}
                     ({{item.publication_year}})
@@ -31,7 +36,6 @@
                 {% endif %}
             </p>
             <br>
-
     {% endfor %}
 {% else %}
     <i> {{ empty_message }} </i>

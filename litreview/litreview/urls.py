@@ -64,6 +64,8 @@ urlpatterns = [
     # Profile management
 
     path('profile/', views.profile, name='profile'),
+    path('profile/description-modification', views.add_description, name='description-modification'),
+
     path('profile/tickets/', views.profile_tickets, name='profile-tickets'),
     path('profile/tickets/delete/<int:ticket_id>', views.delete_ticket, name='delete-ticket'),
     path('profile/tickets/delete/<int:ticket_id>/confirm', views.confirm_deletion_ticket, name='confirm-delete-ticket'),

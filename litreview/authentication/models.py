@@ -2,10 +2,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from blog.models import Ticket, Review
 
+
 class User(AbstractUser):
 
     tickets_list = models.ManyToManyField(Ticket, related_name="tickets_list")
     reviews_list = models.ManyToManyField(Review, related_name="reviews_list")
+    description = models.TextField(verbose_name="Description", max_length=1000, blank=True, null=True)
+
 
 class UserFollows(models.Model):
 

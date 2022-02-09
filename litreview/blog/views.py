@@ -3,42 +3,27 @@ from .models import Ticket, Review
 from authentication.models import User, UserFollows
 from django.contrib.auth.decorators import login_required
 from . import forms
-from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import MultiValueDictKeyError
+
 
 @login_required
 def home(request):
 
     try:
-
         followers = UserFollows.objects.filter(user_id=request.user)
-        tickets = []
-        reviews = []
-
-        for review in Review.objects.filter(user=request.user):
-            reviews.append(review)
-        for ticket in Ticket.objects.filter(user=request.user):
-            tickets.append(ticket)
-            if ticket.status == False:
-                reviews.append(Review.objects.get(ticket=ticket))
+        user_object = User.objects.get(id=request.user.id)
+        tickets = [ticket for ticket in user_object.tickets_list.all()]
+        reviews = [review for review in user_object.reviews_list.all()]
 
         for user in followers:
-            try:
-                for ticket in Ticket.objects.filter(user=user.followed_user_id):
-                    tickets.append(ticket)
-            except: # TODO Implement DoestNotExist
-                pass
+            [tickets.append(ticket) for ticket in Ticket.objects.filter(user=user.followed_user_id)]
+            [reviews.append(review) for review in Review.objects.filter(user=user.followed_user_id)]
 
-            try:
-                for review in Review.objects.filter(user=user.followed_user_id):
-                    reviews.append(review)
-            except: # TODO Implement DoestNotExist
-                pass
-
-
-        publications = tickets + reviews
+        publications = set(tickets + reviews)
         publications = sorted(publications, key=lambda x: x.time_created, reverse=True)
 
-    except: # TODO Implement DoestNotExist
+    except ObjectDoesNotExist:
         publications = []
 
     return render(request, 'home.html', context={'publications': publications})
@@ -65,6 +50,7 @@ def review_list_view(request):
     }
     return render(request, "tickets_reviews/review_list.html", context)
 
+
 @login_required
 def show_review(request, review_id):
 
@@ -81,7 +67,7 @@ def user_list(request):
         if request.GET['fname']:
             pass
         search_error = True
-    except: # TODO Find the exception error
+    except MultiValueDictKeyError:
         pass
 
     user_infos = {}
@@ -121,7 +107,7 @@ def profile(request):
 def profile_tickets(request):
 
     guest_tickets = Ticket.objects.filter(user=request.user)
-    reviews = Review.objects.all()
+    reviews = [review for review in Review.objects.all() if review.ticket != False]
 
     context = {
         'item_list': guest_tickets,
@@ -163,7 +149,7 @@ def user_page(request, user_id):
     try:
         relation = UserFollows.objects.get(user_id=request.user, followed_user_id=guest)
         action = 'unfollow'
-    except: # TODO DoestNotExit alternative
+    except ObjectDoesNotExist:
         if guest.id != request.user.id:
             action = 'follow'
         else:
@@ -220,6 +206,9 @@ def create_review(request):
             except AttributeError:
                 pass
             review.save()
+            user_object = User.objects.get(id=request.user.id)
+            user_object.reviews_list.add(review)
+            user_object.save()
             return redirect('home')
 
     context = {'form': review_form, 'item_type': 'une nouvelle critique'}
@@ -255,6 +244,9 @@ def review_from_ticket(request, ticket_id):
             review.content_picture = ticket.content_picture
             review.publication_year = ticket.publication_year
             review.save()
+            user_object = User.objects.get(id=request.user.id)
+            user_object.reviews_list.add(review)
+            user_object.save()
 
             return redirect('home')
 
@@ -330,8 +322,8 @@ def check_ownership(request, object):
 
     if request.user == object.user:
         return True
-
     return False
+
 
 @login_required
 def delete_review(request, review_id):
@@ -399,6 +391,7 @@ def unfollow_from_manager(request, user_id):
 
     return redirect('subscription-management')
 
+
 @login_required
 def search_user(request):
 
@@ -408,4 +401,21 @@ def search_user(request):
     except:
         return user_list(request)
     return redirect('user-page', researched_user.id)
+
+@login_required
+def add_description(request):
+
+    user_object = User.objects.get(id=request.user.id)
+
+    if request.method == 'POST':
+        form = forms.add_description(request.POST, instance=user_object)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = forms.add_description(instance=user_object)
+
+    return render(request, 'user/description_update.html', {'form': form, 'heading': 'de la description'})
+
+
 
