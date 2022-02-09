@@ -1,11 +1,11 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from blog.models import Ticket, Review
 
 class User(AbstractUser):
 
-    profile_photo = models.ImageField(verbose_name='photo de profil')
-
+    tickets_list = models.ManyToManyField(Ticket, related_name="tickets_list")
+    reviews_list = models.ManyToManyField(Review, related_name="reviews_list")
 
 class UserFollows(models.Model):
 

@@ -193,7 +193,10 @@ def create_ticket(request):
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
+            user_object = User.objects.get(id=request.user.id)
             ticket.save()
+            user_object.tickets_list.add(ticket)
+            user_object.save()
             return redirect('ticket-list')
 
     context = {'form': ticket_form, 'item_type': 'un nouveau ticket'}
