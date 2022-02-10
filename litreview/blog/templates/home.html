@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - Flux{% endblock title %}
+
+{% load blog_extras %}
 {% block content %}
 
 <h1> Flux </h1>
@@ -20,7 +22,7 @@
             <em> &nbsp; de {{ item.content_author }}</em>
         </div>
         <div class="user_element">
-            {% if item.to_class_name == 'Review' %}
+            {% if item|model_type == 'Review' %}
                 <br>
                 <form action="{% url 'show-review' item.id %}">
                   <input class="publish" type="submit" value="'{{item.headline}}' - {{ item.rating}}/5">

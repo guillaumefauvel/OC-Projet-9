@@ -19,9 +19,6 @@ class Ticket(models.Model):
     def __str__(self):
         return self.content_reference
 
-    def to_class_name(value):
-        return value.__class__.__name__
-
     class Meta:
         ordering = ['-time_created']
 
@@ -44,9 +41,6 @@ class Review(models.Model):
                                            blank=True, null=True)
     def __str__(self):
         return self.headline
-
-    def to_class_name(value):
-        return value.__class__.__name__
 
     class Meta:
         ordering = ['-time_created']
