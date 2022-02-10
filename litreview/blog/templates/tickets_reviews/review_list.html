@@ -7,8 +7,8 @@
 <h1> Critiques publiées </h1>
 <hr><br><br>
 
-{% if review_objects %}
-        {% for review in review_objects %}
+{% if review_page_objects %}
+        {% for review in review_page_objects %}
             {% if review.content_picture %}
                 <div class="item-picture">
                     <img src="{{ review.content_picture.url }}" class="ticket-picture">
@@ -35,6 +35,9 @@
             </div>
             <br><hr><br>
         {% endfor %}
+
+{% include 'partials/blog_snippet.html' with page_obj=review_page_objects %}
+
 {% else %}
         <p> Pour le moment, aucune critique n'a été publiée. </p>
 {% endif %}

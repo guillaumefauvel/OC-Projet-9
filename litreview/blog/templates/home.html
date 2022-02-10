@@ -6,8 +6,8 @@
 <h1> Flux </h1>
 <hr><br><br>
 
-{% if publications %}
-    {% for item in publications %}
+{% if publications_page_object %}
+    {% for item in publications_page_object %}
         {% if item.content_picture %}
             <img src="{{ item.content_picture.url }}" class="ticket-picture">
         {% endif %}
@@ -48,5 +48,7 @@
     <p> Votre flux est vide, abonnez-vous à un quelqu'un ayant
         déjà publié du contenu afin d'alimenter votre flux.</p>
 {% endif %}
+
+{% include 'partials/blog_snippet.html' with page_obj=publications_page_object %}
 
 {% endblock content %}

@@ -9,6 +9,9 @@ class User(AbstractUser):
     reviews_list = models.ManyToManyField(Review, related_name="reviews_list")
     description = models.TextField(verbose_name="Description", max_length=1000, blank=True, null=True)
 
+    class Meta:
+        ordering = ['-username']
+
 
 class UserFollows(models.Model):
 

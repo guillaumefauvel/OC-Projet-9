@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from . import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
+from django.core.paginator import Paginator
 
 
 @login_required
@@ -24,9 +25,14 @@ def home(request):
         publications = sorted(publications, key=lambda x: x.time_created, reverse=True)
 
     except ObjectDoesNotExist:
-        publications = []
 
-    return render(request, 'home.html', context={'publications': publications})
+        publications = []
+    paginator = Paginator(publications, 8)
+    page_number = request.GET.get('page')
+    publications_page_object = paginator.get_page(page_number)
+
+
+    return render(request, 'home.html', context={'publications_page_object': publications_page_object})
 
 
 @login_required
@@ -34,8 +40,12 @@ def ticket_list_view(request):
 
     ticket_objects = Ticket.objects.all()
 
+    paginator = Paginator(ticket_objects, 8)
+    page_number = request.GET.get('page')
+    tickets_page_obj = paginator.get_page(page_number)
+
     context = {
-        'ticket_objects': ticket_objects
+        'tickets_page_obj': tickets_page_obj
     }
     return render(request, "tickets_reviews/ticket_list.html", context)
 
@@ -45,8 +55,12 @@ def review_list_view(request):
 
     review_objects = Review.objects.all()
 
+    paginator = Paginator(review_objects, 8)
+    page_number = request.GET.get('page')
+    review_page_objects = paginator.get_page(page_number)
+
     context = {
-        'review_objects': review_objects
+        'review_page_objects': review_page_objects
     }
     return render(request, "tickets_reviews/review_list.html", context)
 
@@ -57,6 +71,9 @@ def show_review(request, review_id):
     review_object = Review.objects.get(id=review_id)
 
     return render(request, 'tickets_reviews/show_review.html', context={'review': review_object} )
+
+
+
 
 
 @login_required
@@ -80,9 +97,17 @@ def user_list(request):
             'following_number': len(UserFollows.objects.filter(user_id=author)),
         }
 
+    user_infos = sorted(user_infos.items(), key=lambda x: str(x[1]['user_object']), reverse=True)
+
+    paginator = Paginator(user_infos, 6)
+    page_number = request.GET.get('page')
+    users_page_object = paginator.get_page(page_number)
+
+    # print(user_infos[0][1]['user_object'])
+
     context = {
         'search_error': search_error,
-        'user_infos': user_infos,
+        'users_page_object': users_page_object,
     }
 
     return render(request, "user/user_list.html", context)

@@ -16,19 +16,21 @@
     <p>Le pseudonyme fournis est invalide.</p>
 {% endif %}
 
-{% for key, values in user_infos.items %}
-  <br><br><br>
-  <div class="user_element">
-      <a href="{% url 'user-page' values.user_object.id %}"><em>{{ values.user_object.username }}</em></a>
+{% for values in users_page_object %}
 
-      &nbsp;-&nbsp;{{ values.ticket_number }} Ticket{{ values.ticket_number|pluralize:" ,s" }} -
-      {{ values.review_number }} Critique{{ values.review_number|pluralize:" ,s" }} -
-      {{ values.follower_number }} Abonné{{ values.follower_number|pluralize:" ,s" }} -
-      {{ values.following_number }} Abonnement{{ values.following_number|pluralize:" ,s" }}
-  </div>
+<br><br><br>
+<div class="user_element">
+  <a href="{% url 'user-page' values.1.user_object.id %}"><em>{{ values.1.user_object.username }}</em></a>
+  &nbsp;-&nbsp;{{ values.1.ticket_number }} Ticket{{ values.1.ticket_number|pluralize:" ,s" }} -
+  {{ values.1.review_number }} Critique{{ values.1.review_number|pluralize:" ,s" }} -
+  {{ values.1.follower_number }} Abonné{{ values.1.follower_number|pluralize:" ,s" }} -
+  {{ values.1.following_number }} Abonnement{{ values.1.following_number|pluralize:" ,s" }}
+</div>
+
 {% endfor %}
 
+<br><br>
 
-
+{% include 'partials/blog_snippet.html' with page_obj=users_page_object %}
 
 {% endblock %}

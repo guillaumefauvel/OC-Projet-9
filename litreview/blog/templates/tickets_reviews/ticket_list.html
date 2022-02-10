@@ -8,8 +8,9 @@
 <h1> Tickets ouvert </h1>
 <hr><br><br>
 
-{% if ticket_objects %}
-    {% for ticket in ticket_objects %}
+
+{% if tickets_page_obj %}
+    {% for ticket in tickets_page_obj %}
         {% if ticket.status %}
             {% if ticket.content_picture %}
                 <div class="post">
@@ -35,8 +36,12 @@
             <br><hr><br>
         {% endif %}
     {% endfor %}
+
+{% include 'partials/blog_snippet.html' with page_obj=tickets_page_obj %}
+
 {% else %}
     <p> Il n'y pas de ticket ouvert.</p>
 {% endif %}
+
 
 {% endblock %}

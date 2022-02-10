@@ -34,6 +34,7 @@
                 {% add_paranthesis ticket.publication_year %}
                 de {{ ticket.content_author }} </p>
             {% else %}
+                <p>
                 {{ ticket }}
                 {% add_paranthesis ticket.publication_year %}
                 de {{ ticket.content_author }}
@@ -43,23 +44,24 @@
                         <a href="{% url 'show-review' review.id %}"> Critique </a>
                     {% endif %}
                 {% endfor %}
+                </p>
             {% endif %}
-            <br>
     {% endfor %}
 {% else %}
     <i> Je n'ai pas encore ouvert de ticket </i>
 {% endif %}
+<br>
 </div>
 
 <h2>Mes critiques</h2>
 <div class="content-items">
 {% if reviews %}
     {% for review in reviews %}
-        <p><a href="{% url 'show-review' review.id %}">{{ review }}</a>
-            {% add_paranthesis ticket.publication_year %}
+        <p><a href="{% url 'show-review' review.id %}">{{ review.content_reference }}</a>
+            {% add_paranthesis review.publication_year %}
             de {{ review.content_author }}
         </p>
-        <br>
+
     {% endfor %}
 {% else %}
     <i> Je n'ai pas encore publié de critique </i>
