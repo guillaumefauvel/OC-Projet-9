@@ -25,7 +25,7 @@
                   <input class="publish" type="submit" value="'{{item.headline}}' - {{ item.rating}}/5">
                 </form>
                 <p class="item-details">Critique publié par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a>
-                    le {{ item.time_created }}
+                    {% time_context item.time_created %}
                     {% if item.ticket.user %}
                         en réponse à <a href="{% url 'user-page' item.ticket.user.id %}">{{ item.ticket.user }}</a>
                     {% endif %}
@@ -38,7 +38,7 @@
                       <input class="publish" type="submit" value="Publier une critique">
                     </form>
                 {% endif %}
-                <p class="item-details">Ticket ouvert par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a> le {{ item.time_created }}</p>
+                <p class="item-details">Ticket ouvert par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a> {% time_context item.time_created %}</p>
                 <br><hr><br>
             {% endif %}
         </div>

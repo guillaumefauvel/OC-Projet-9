@@ -30,7 +30,7 @@
             <br>
             <div class="item-details">
                 Ticket ouvert par <a href="{% url 'user-page' ticket.user.id %}">{{ ticket.user }}</a>
-                le {{ ticket.time_created}}
+                {% time_context ticket.time_created %}
             </div>
             <br><hr><br>
         {% endif %}

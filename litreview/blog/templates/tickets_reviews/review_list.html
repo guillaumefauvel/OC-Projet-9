@@ -27,7 +27,7 @@
             </form>
             <div class="item-details">
                 <p>Publié par <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
-                    le {{ review.time_created}}
+                    {% time_context review.time_created %}
                     {% if review.ticket.user %}
                         en réponse à <a href="{% url 'user-page' review.ticket.user.id %}">{{ review.ticket.user }}</a>
                     {% endif %}

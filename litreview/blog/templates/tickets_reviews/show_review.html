@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - {{ review.content_reference }}{% endblock title %}
-
+{% load blog_extras %}
 {% block content %}
 
 
@@ -18,6 +18,7 @@
     {% if review.content_picture %}
         <img src="{{ review.content_picture.url }}" class="ticket-picture">
     {% endif %}
+    <p class="item-details">Publiée {% time_context review.time_created %}</p>
 
     <div class="users-infos">
         <p><em>Notes :</em> {{ review.rating }}</p>

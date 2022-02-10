@@ -16,6 +16,7 @@
 {% if ticket_id.content_picture %}
     <img src="{{ ticket_id.content_picture.url }}">
 {% endif %}
+<p class="item-details">Ticket ouvert {% time_context ticket_id.time_created %} par <a href="{% url 'user-page' ticket_id.user.id %}">{{ ticket_id.user }}</a></p>
 
 <h2>Publier votre critique</h2>
 <form method="post">
