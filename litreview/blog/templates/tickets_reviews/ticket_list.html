@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - Tickets ouverts {% endblock title %}
-
+{% load blog_extras %}
 {% block content %}
 
 
@@ -19,9 +19,7 @@
             <div class="reference">
                 <h2>
                     {{ ticket.content_reference }}
-                    {% if ticket.publication_year %}
-                        ({{ticket.publication_year}})
-                    {% endif %}
+                    {% add_paranthesis ticket.publication_year %}
                 </h2>
                 <h4> &nbsp; de {{ ticket.content_author }}</h4>
             </div>

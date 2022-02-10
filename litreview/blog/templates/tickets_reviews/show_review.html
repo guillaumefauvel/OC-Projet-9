@@ -8,9 +8,7 @@
     <div class="reference">
         <h1>
         {{ review.content_reference }}
-        {% if review.publication_year %}
-                ({{review.publication_year}})
-        {% endif %}
+        {% add_paranthesis review.publication_year %}
         </h1>
         <h4>&nbsp;de {{ review.content_author }}</h4>
     </div>

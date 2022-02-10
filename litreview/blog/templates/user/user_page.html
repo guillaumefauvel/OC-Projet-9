@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - {{ guest_id }}{% endblock title %}
-
+{% load blog_extras %}
 {% block content %}
 
 <h1> Profil de {{ guest_id }} </h1>
@@ -31,15 +31,11 @@
     {% for ticket in tickets %}
             {% if ticket.status %}
             <p><a href="{% url page_ref ticket.id %}">{{ ticket }}</a>
-                {% if ticket.publication_year %}
-                    ({{ticket.publication_year}})
-                {% endif %}
+                {% add_paranthesis ticket.publication_year %}
                 de {{ ticket.content_author }} </p>
             {% else %}
                 {{ ticket }}
-                {% if ticket.publication_year %}
-                    ({{ ticket.publication_year }})
-                {% endif %}
+                {% add_paranthesis ticket.publication_year %}
                 de {{ ticket.content_author }}
                 - Ticket fermé >
                 {% for review in foreign_reviews %}
@@ -60,9 +56,7 @@
 {% if reviews %}
     {% for review in reviews %}
         <p><a href="{% url 'show-review' review.id %}">{{ review }}</a>
-            {% if review.publication_year %}
-                ({{review.publication_year}})
-            {% endif %}
+            {% add_paranthesis ticket.publication_year %}
             de {{ review.content_author }}
         </p>
         <br>

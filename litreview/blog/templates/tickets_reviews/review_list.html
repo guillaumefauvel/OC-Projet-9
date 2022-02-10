@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - Critiques publiées {% endblock title %}
-
+{% load blog_extras %}
 {% block content %}
 
 
@@ -17,9 +17,7 @@
             <div class="reference">
                 <h2>
                     {{ review.content_reference }}
-                    {% if review.publication_year %}
-                        ({{review.publication_year}})
-                    {% endif %}
+                    {% add_paranthesis review.publication_year %}
                 </h2>
                 <h4> &nbsp;de {{ review.content_author }} </h4>
             </div>

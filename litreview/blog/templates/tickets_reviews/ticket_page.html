@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - {{ ticket_id.content_reference }}{% endblock title %}
-
+{% load blog_extras %}
 {% block content %}
 
 <div class="reference">
     <h1>
     {{ ticket_id.content_reference }}
-    {% if ticket_id.publication_year %}
-            ({{ticket_id.publication_year}})
-    {% endif %}
+    {% add_paranthesis ticket_id.publication_year %}
     </h1>
     <h3>&nbsp; de {{ ticket_id.content_author }}</h3>
 </div>
