@@ -3,25 +3,26 @@ from blog.models import Ticket, Review
 from authentication.models import User
 
 
-class ticket_creation_form(forms.ModelForm):
+class TicketCreationForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = ('content_reference', 'content_author', 'publication_year', 'user_comment', 'content_picture')
 
 
-class review_creation_form(forms.ModelForm):
+class ReviewCreationForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ('content_reference', 'content_author', 'publication_year', 'rating', 'headline','body', 'content_picture')
+        fields = ('content_reference', 'content_author', 'publication_year',
+                  'rating', 'headline', 'body', 'content_picture')
 
 
-class linked_review_form(forms.ModelForm):
+class LinkedReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ('rating', 'headline','body')
+        fields = ('rating', 'headline', 'body')
 
 
-class add_description(forms.ModelForm):
+class AddDescription(forms.ModelForm):
     class Meta:
         model = User
         fields = ('description',)

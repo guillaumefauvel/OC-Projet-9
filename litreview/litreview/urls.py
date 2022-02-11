@@ -21,6 +21,7 @@ from django.contrib.auth.views import (LoginView, LogoutView, PasswordChangeView
 import authentication.views
 from blog import views
 import helpers.views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
 
@@ -33,7 +34,7 @@ urlpatterns = [
 
     path('', LoginView.as_view(
          template_name='authentication/login.html',
-         redirect_authenticated_user=True),name='login'),
+         redirect_authenticated_user=True), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', authentication.views.signup_page, name='signup'),
     path('profile/change-password/', PasswordChangeView.as_view(
@@ -55,7 +56,7 @@ urlpatterns = [
 
     # Authors
 
-    path('author/', views.show_authors, name='authors' ),
+    path('author/', views.show_authors, name='authors'),
     path('author/<str:author_refererence>', views.show_author_work, name='author-page'),
 
     # Users
@@ -78,15 +79,14 @@ urlpatterns = [
 
     path('profile/reviews/', views.profile_reviews, name='profile-reviews'),
     path('profile/reviews/delete/<int:review_id>', views.delete_review, name='delete-review'),
-    path('profile/reviews/delete/<int:review_id>/confirm', views.confirm_deletion_review,name='confirm-delete-review'),
+    path('profile/reviews/delete/<int:review_id>/confirm', views.confirm_deletion_review, name='confirm-delete-review'),
     path('profile/reviews/modify/<int:review_id>', views.modify_review, name='modify-review'),
 
     path('profile/subscriptions', views.manage_subscriptions, name='subscription-management'),
     path('profile/subscriptions/delete/<int:user_id>', views.unfollow_from_manager, name='delete-subscription'),
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "helpers.views.handle_not_found"
 
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns += staticfiles_urlpatterns()

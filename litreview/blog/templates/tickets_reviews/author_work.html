@@ -11,6 +11,7 @@
 
 {% if reviews %}
     <h3>Critique{{ reviews|pluralize:" ,s" }}</h3>
+    <hr class="small"><br><br>
     {% for review in reviews %}
         <p>
             <a>{{ review.content_reference }}</a> {% add_paranthesis review.publication_year %} -
@@ -24,6 +25,7 @@
 
 {% if tickets %}
     <h3>Ticket{{ tickets|pluralize:" ,s" }}</h3>
+    <hr class="small"><br><br>
     {% for ticket in tickets %}
         <p>
             <a href="{% url 'ticket-page' ticket.id %}">{{ ticket }}</a>

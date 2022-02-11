@@ -31,7 +31,6 @@ def home(request):
     page_number = request.GET.get('page')
     publications_page_object = paginator.get_page(page_number)
 
-
     return render(request, 'home.html', context={'publications_page_object': publications_page_object})
 
 
@@ -70,10 +69,7 @@ def show_review(request, review_id):
 
     review_object = Review.objects.get(id=review_id)
 
-    return render(request, 'tickets_reviews/show_review.html', context={'review': review_object} )
-
-
-
+    return render(request, 'tickets_reviews/show_review.html', context={'review': review_object})
 
 
 @login_required
@@ -122,8 +118,8 @@ def profile(request):
     followers_number = len(UserFollows.objects.filter(followed_user_id=user_name))
 
     context = {'user_name': user_name,
-               'followings':followings_number,
-               'followers': followers_number,}
+               'followings': followings_number,
+               'followers': followers_number}
 
     return render(request, 'user/profile_view.html', context=context)
 
@@ -132,14 +128,14 @@ def profile(request):
 def profile_tickets(request):
 
     guest_tickets = Ticket.objects.filter(user=request.user)
-    reviews = [review for review in Review.objects.all() if review.ticket != False]
+    reviews = [review for review in Review.objects.all() if review.ticket is not False]
 
     context = {
         'item_list': guest_tickets,
         'review_list': reviews,
         'heading_one': 'Tickets ouverts',
         'empty_message': 'Je n\'ai pas encore ouvert de ticket',
-        'page_ref':'ticket-page',
+        'page_ref': 'ticket-page',
         'delete_item': 'delete-ticket',
         'modify_item': 'modify-ticket',
     }
@@ -156,7 +152,7 @@ def profile_reviews(request):
         'item_list': guest_reviews,
         'heading_one': 'Critiques publiées',
         'empty_message': 'Vous n\'avez pas encore publié de critique',
-        'page_ref':'show-review',
+        'page_ref': 'show-review',
         'delete_item': 'delete-review',
         'modify_item': 'modify-review',
     }
@@ -198,9 +194,9 @@ def user_page(request, user_id):
 @login_required
 def create_ticket(request):
 
-    ticket_form = forms.ticket_creation_form()
+    ticket_form = forms.TicketCreationForm()
     if request.method == 'POST':
-        ticket_form = forms.ticket_creation_form(request.POST, request.FILES)
+        ticket_form = forms.TicketCreationForm(request.POST, request.FILES)
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
@@ -219,10 +215,10 @@ def create_ticket(request):
 def create_review(request):
     """This is a review query which is not link to any ticket"""
 
-    review_form = forms.review_creation_form()
+    review_form = forms.ReviewCreationForm()
 
     if request.method == 'POST':
-        review_form = forms.review_creation_form(request.POST, request.FILES)
+        review_form = forms.ReviewCreationForm(request.POST, request.FILES)
         if review_form.is_valid():
             review = review_form.save(commit=False)
             review.user = request.user
@@ -250,13 +246,13 @@ def review_from_ticket(request, ticket_id):
     try:
         Review.objects.get(ticket=ticket)
         return redirect('home')
-    except:
+    except ObjectDoesNotExist:
         pass
 
-    review_form = forms.linked_review_form()
+    review_form = forms.LinkedReviewForm()
 
     if request.method == 'POST':
-        review_form = forms.linked_review_form(request.POST)
+        review_form = forms.LinkedReviewForm(request.POST)
         if review_form.is_valid():
             review = review_form.save(commit=False)
             review.user = request.user
@@ -314,14 +310,14 @@ def modify_ticket(request, ticket_id):
         redirect('home')
 
     if request.method == 'POST':
-        form = forms.ticket_creation_form(request.POST, instance=ticket)
+        form = forms.TicketCreationForm(request.POST, instance=ticket)
         if form.is_valid():
             form.save()
             return redirect('profile-tickets')
     else:
-        form = forms.ticket_creation_form(instance=ticket)
+        form = forms.TicketCreationForm(instance=ticket)
 
-    return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading':'du ticket'})
+    return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading': 'du ticket'})
 
 
 @login_required
@@ -333,19 +329,19 @@ def modify_review(request, review_id):
         redirect('home')
 
     if request.method == 'POST':
-        form = forms.review_creation_form(request.POST, instance=review)
+        form = forms.ReviewCreationForm(request.POST, instance=review)
         if form.is_valid():
             form.save()
             return redirect('profile-reviews')
     else:
-        form = forms.review_creation_form(instance=review)
+        form = forms.ReviewCreationForm(instance=review)
 
-    return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading':'de la critique'})
+    return render(request, 'tickets_reviews/item_update.html', {'form': form, 'heading': 'de la critique'})
 
 
-def check_ownership(request, object):
+def check_ownership(request, object_ref):
 
-    if request.user == object.user:
+    if request.user == object_ref.user:
         return True
     return False
 
@@ -358,7 +354,7 @@ def delete_review(request, review_id):
     context = {'item_id': review_id,
                'item': review,
                'item_name': 'cette critique',
-               'deletion_path':'confirm-delete-review'}
+               'deletion_path': 'confirm-delete-review'}
 
     if check_ownership(request, review):
         return render(request, 'tickets_reviews/item_deletion_confirmation.html', context)
@@ -423,7 +419,7 @@ def search_user(request):
     researched_user = request.GET['fname']
     try:
         researched_user = User.objects.get(username=researched_user)
-    except:
+    except ObjectDoesNotExist:
         return user_list(request)
     return redirect('user-page', researched_user.id)
 
@@ -434,12 +430,12 @@ def add_description(request):
     user_object = User.objects.get(id=request.user.id)
 
     if request.method == 'POST':
-        form = forms.add_description(request.POST, instance=user_object)
+        form = forms.AddDescription(request.POST, instance=user_object)
         if form.is_valid():
             form.save()
             return redirect('profile')
     else:
-        form = forms.add_description(instance=user_object)
+        form = forms.AddDescription(instance=user_object)
 
     return render(request, 'user/description_update.html', {'form': form, 'heading': 'de la description'})
 
@@ -453,11 +449,9 @@ def show_authors(request):
     authors_references = [item.content_author for item in tickets]
     authors_references.extend([item.content_author for item in reviews])
     authors_references = set(authors_references)
-    two_words_checker = lambda x: str(x.split()[1]) if (' ' in x) else str(x)
-    authors_references = sorted(authors_references, key=two_words_checker)
+    authors_references = sorted(authors_references, key=lambda x: str(x.split()[1]) if (' ' in x) else str(x))
 
     return render(request, 'tickets_reviews/authors_list.html', context={'authors': authors_references})
-
 
 
 @login_required

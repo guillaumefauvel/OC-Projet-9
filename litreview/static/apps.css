@@ -34,7 +34,7 @@ html ::-webkit-scrollbar {
 }
 
 /* The navigation menu links */
-.sidebar a {
+.sidebar a, .sidebar a:visited {
     text-decoration: none;
     color: #ffffe6;
     font-weight: bold;
@@ -79,8 +79,13 @@ em {
     font-style: normal;
 }
 
-a {
+a, a:visited {
     text-decoration: none;
+    color: blue;
+}
+
+a:hover {
+  color: red;
 }
 
 .user-profile {
@@ -98,8 +103,13 @@ hr {
     width: 15%;
 }
 
+.small {
+    width: 5%;
+}
 
 .publish {
   border-radius: 3px;
   background-color: white;
 }
+
+
