@@ -53,6 +53,11 @@ urlpatterns = [
     path('review/list', views.review_list_view, name='review-list'),
     path('review/<int:review_id>', views.show_review, name='show-review'),
 
+    # Authors
+
+    path('author/', views.show_authors, name='authors' ),
+    path('author/<str:author_refererence>', views.show_author_work, name='author-page'),
+
     # Users
 
     path('userlist/', views.user_list, name='user-list'),

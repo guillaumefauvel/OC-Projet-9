@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}LitReview - {% endblock title %}
+{% load blog_extras %}
+
+{% block content %}
+
+<br>
+<h1>{{ author }}</h1>
+<hr>
+<br><br><br>
+
+{% if reviews %}
+    <h3>Critique{{ reviews|pluralize:" ,s" }}</h3>
+    {% for review in reviews %}
+        <p>
+            <a>{{ review.content_reference }}</a> {% add_paranthesis review.publication_year %} -
+            <a href="{% url 'show-review' review.id %}">{{ review }}</a> {{ review.rating }}/5 par
+            <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
+        </p>
+
+    {% endfor %}
+{% endif %}
+
+
+{% if tickets %}
+    <h3>Ticket{{ tickets|pluralize:" ,s" }}</h3>
+    {% for ticket in tickets %}
+        <p>
+            <a href="{% url 'ticket-page' ticket.id %}">{{ ticket }}</a>
+            {% add_paranthesis ticket.publication_year %} par
+            <a href="{% url 'user-page' ticket.user.id %}">{{ ticket.user }}</a>
+        </p>
+        {% endfor %}
+{% endif %}
+
+
+{% endblock %}
+

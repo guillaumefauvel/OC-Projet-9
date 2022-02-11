@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}LitReview - {% endblock title %}
+
+{% block content %}
+
+<h1>Liste des auteurs</h1>
+<hr><br><br>
+
+{% for author in authors %}
+    <ul>
+        <li>
+            <a href="{% url 'author-page' author %}">{{ author }}</a>
+            <br><br>
+        </li>
+    </ul>
+{% endfor %}
+
+{% endblock %}
+

@@ -18,6 +18,7 @@ def add_paranthesis(context, content):
     else:
         return ''
 
+
 @register.simple_tag(takes_context=True)
 def time_context(context, time_reference):
 
@@ -31,6 +32,8 @@ def time_context(context, time_reference):
         return f'le {time_difference}'
     elif days > 1:
         return f'Il y a {days} jours'
+    elif days == 1:
+        return 'Hier'
     elif hours > 1:
         return f'Il y a {hours} heures'
     elif minutes > 1:

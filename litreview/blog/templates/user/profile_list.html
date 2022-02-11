@@ -20,7 +20,7 @@
 
                 {% add_paranthesis item.publication_year %}
 
-                de {{ item.content_author }}
+                de <a href="{% url 'author-page' item.content_author %}">{{ item.content_author }}</a>
 
                 {% if item.status != True and item|model_type == 'Ticket' %}
                     <a> - Ticket fermé -> </a>

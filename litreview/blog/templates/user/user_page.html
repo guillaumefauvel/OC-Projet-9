@@ -32,12 +32,12 @@
             {% if ticket.status %}
             <p><a href="{% url page_ref ticket.id %}">{{ ticket }}</a>
                 {% add_paranthesis ticket.publication_year %}
-                de {{ ticket.content_author }} </p>
+                de <a href="{% url 'author-page' ticket.content_author %}">{{ ticket.content_author }}</a></p>
             {% else %}
                 <p>
                 {{ ticket }}
                 {% add_paranthesis ticket.publication_year %}
-                de {{ ticket.content_author }}
+                    de <a href="{% url 'author-page' ticket.content_author %}">{{ ticket.content_author }}</a>
                 - Ticket fermé >
                 {% for review in foreign_reviews %}
                     {% if review.ticket.id == ticket.id %}
@@ -59,7 +59,7 @@
     {% for review in reviews %}
         <p><a href="{% url 'show-review' review.id %}">{{ review.content_reference }}</a>
             {% add_paranthesis review.publication_year %}
-            de {{ review.content_author }}
+            de <a href="{% url 'author-page' review.content_author %}">{{ review.content_author }}</a>
         </p>
 
     {% endfor %}

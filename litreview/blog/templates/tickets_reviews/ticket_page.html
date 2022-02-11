@@ -8,7 +8,7 @@
     {{ ticket_id.content_reference }}
     {% add_paranthesis ticket_id.publication_year %}
     </h1>
-    <h3>&nbsp; de {{ ticket_id.content_author }}</h3>
+    <h3>&nbsp; de <a href="{% url 'author-page' ticket_id.content_author %}">{{ ticket_id.content_author }}</a></h3>
 </div>
 
 <br><br>

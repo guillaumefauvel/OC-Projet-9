@@ -22,7 +22,8 @@
                     {{ ticket.content_reference }}
                     {% add_paranthesis ticket.publication_year %}
                 </h2>
-                <h4> &nbsp; de {{ ticket.content_author }}</h4>
+
+                <h4> &nbsp; de <a href="{% url 'author-page' ticket.content_author %}">{{ ticket.content_author }}</a></h4>
             </div>
             <p>{{ticket.user_comment}}</p>
             <form action="{% url 'ticket-page' ticket.id %}">

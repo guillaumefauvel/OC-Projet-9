@@ -10,7 +10,7 @@
         {{ review.content_reference }}
         {% add_paranthesis review.publication_year %}
         </h1>
-        <h4>&nbsp;de {{ review.content_author }}</h4>
+        <h4>&nbsp;de <a href="{% url 'author-page' review.content_author %}">{{ review.content_author }}</a></h4>
     </div>
 
     <br><br>

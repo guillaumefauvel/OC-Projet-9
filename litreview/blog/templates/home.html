@@ -16,7 +16,7 @@
             {{ item.content_reference }}
             {% add_paranthesis item.publication_year %}
             </h2>
-            <em> &nbsp; de {{ item.content_author }}</em>
+            <em> &nbsp; de <a href="{% url 'author-page' item.content_author %}">{{ item.content_author }}</a></em>
         </div>
         <div class="user_element">
             {% if item|model_type == 'Review' %}

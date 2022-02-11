@@ -427,6 +427,7 @@ def search_user(request):
         return user_list(request)
     return redirect('user-page', researched_user.id)
 
+
 @login_required
 def add_description(request):
 
@@ -443,4 +444,32 @@ def add_description(request):
     return render(request, 'user/description_update.html', {'form': form, 'heading': 'de la description'})
 
 
+@login_required
+def show_authors(request):
 
+    tickets = Ticket.objects.all()
+    reviews = Review.objects.all()
+
+    authors_references = [item.content_author for item in tickets]
+    authors_references.extend([item.content_author for item in reviews])
+    authors_references = set(authors_references)
+    two_words_checker = lambda x: str(x.split()[1]) if (' ' in x) else str(x)
+    authors_references = sorted(authors_references, key=two_words_checker)
+
+    return render(request, 'tickets_reviews/authors_list.html', context={'authors': authors_references})
+
+
+
+@login_required
+def show_author_work(request, author_refererence):
+
+    tickets = Ticket.objects.filter(content_author=author_refererence, status=True)
+    reviews = Review.objects.filter(content_author=author_refererence)
+
+    context = {
+        'tickets': tickets,
+        'reviews': reviews,
+        'author': author_refererence,
+    }
+
+    return render(request, 'tickets_reviews/author_work.html', context=context)
