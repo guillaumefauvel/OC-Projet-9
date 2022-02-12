@@ -99,17 +99,24 @@ li {
     list-style-type: none;
 }
 
-hr {
-    width: 15%;
-}
+
 
 .small {
+    height: 2px !important;
     width: 5%;
+    margin: auto !important;
 }
+
+
 
 .publish {
   border-radius: 3px;
   background-color: white;
 }
 
-
+hr {
+    height: 3px !important;
+    color: black !important;
+    width: 15%;
+    margin: auto !important;
+}

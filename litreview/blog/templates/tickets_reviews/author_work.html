@@ -14,7 +14,7 @@
     <hr class="small"><br><br>
     {% for review in reviews %}
         <p>
-            <a>{{ review.content_reference }}</a> {% add_paranthesis review.publication_year %} -
+            {{ review.content_reference }} {% add_paranthesis review.publication_year %} -
             <a href="{% url 'show-review' review.id %}">{{ review }}</a> {{ review.rating }}/5 par
             <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
         </p>
