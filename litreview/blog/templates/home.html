@@ -6,49 +6,48 @@
 <h1> Flux </h1>
 <hr><br><br>
 
-{% if publications_page_object %}
-    {% for item in publications_page_object %}
-        {% if item.content_picture %}
-            <img src="{{ item.content_picture.url }}" class="ticket-picture">
-        {% endif %}
-        <div class="reference">
-            <h2>
-            {{ item.content_reference }}
-            {% add_paranthesis item.publication_year %}
-            </h2>
-            <em> &nbsp; de <a href="{% url 'author-page' item.content_author %}">{{ item.content_author }}</a></em>
-        </div>
-        <div class="user_element">
-            {% if item|model_type == 'Review' %}
+<section class="content-list">
+
+    {% if publications_page_object %}
+        {% for item in publications_page_object %}
+        <div class="card" style="width: 18rem;">
+            {% if item.content_picture %}
+                <img src="{{ item.content_picture.url }}" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+            <h5 class="card-title">
+                {{ item.content_reference }}{% add_paranthesis item.publication_year %}
                 <br>
-                <form action="{% url 'show-review' item.id %}">
-                  <input class="publish" type="submit" value="'{{item.headline}}' - {{ item.rating}}/5">
-                </form>
-                <p class="item-details">Critique publié par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a>
+                <em><a href="{% url 'author-page' item.content_author %}">{{ item.content_author }}</a></em>
+            </h5>
+            {% if item|model_type == 'Review' %}
+                <p class="card-text">
+                    <p class="item-details">Critique publié par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a>
                     {% time_context item.time_created %}
                     {% if item.ticket.user %}
                         en réponse à <a href="{% url 'user-page' item.ticket.user.id %}">{{ item.ticket.user }}</a>
                     {% endif %}
-                </p>
-                <br><hr><br>
+                </p></p>
+                    <a href="{% url 'show-review' item.id %}" class="btn btn-primary">'{{item.headline}}' - {{ item.rating}}/5</a>
             {% else %}
-                <h5>{{ item.user_comment }}</h5>
-                {% if item.status %}
-                    <form action="{% url 'ticket-page' item.id %}">
-                      <input class="publish" type="submit" value="Publier une critique">
-                    </form>
-                {% endif %}
-                <p class="item-details">Ticket ouvert par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a> {% time_context item.time_created %}</p>
-                <br><hr><br>
+                <p class="card-text">
+                    <p class="item-details">Ticket ouvert par <a href="{% url 'user-page' item.user.id %}">{{ item.user }}</a> {% time_context item.time_created %}</p></p>
+                    {% if item.status %}
+                    <a href="{% url 'ticket-page' item.id %}" class="btn btn-primary">Publier une critique</a>
+                    {% endif %}
             {% endif %}
+            </div>
         </div>
-    {% endfor %}
-
-{% else %}
-    <p> Votre flux est vide, abonnez-vous à un quelqu'un ayant
-        déjà publié du contenu afin d'alimenter votre flux.</p>
-{% endif %}
+        <br>
+        {% endfor %}
+    {% else %}
+        <p> Votre flux est vide, abonnez-vous à un quelqu'un ayant
+            déjà publié du contenu afin d'alimenter votre flux.</p>
+    {% endif %}
 
 {% include 'partials/blog_snippet.html' with page_obj=publications_page_object %}
 
+</section>
+
 {% endblock content %}
+

@@ -126,3 +126,9 @@ hr {
     margin-right: auto;    
     width: fit-content;
 }
+
+.content-list {
+    margin-left: auto;
+    margin-right: auto;    
+    width: fit-content;
+}
