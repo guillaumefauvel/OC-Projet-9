@@ -27,7 +27,7 @@ def home(request):
     except ObjectDoesNotExist:
 
         publications = []
-    paginator = Paginator(publications, 8)
+    paginator = Paginator(publications, 3)
     page_number = request.GET.get('page')
     publications_page_object = paginator.get_page(page_number)
 

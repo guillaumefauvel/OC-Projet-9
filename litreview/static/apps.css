@@ -120,3 +120,9 @@ hr {
     width: 15%;
     margin: auto !important;
 }
+
+.pagination-nav-bar {
+    margin-left: auto;
+    margin-right: auto;    
+    width: fit-content;
+}
