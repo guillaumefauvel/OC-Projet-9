@@ -10,6 +10,9 @@ from django.core.paginator import Paginator
 
 @login_required
 def home(request):
+    """ Redirect the user to the homepage. The page show the content of the people he follows.
+     It also show his own content.
+     """
 
     try:
         followers = UserFollows.objects.filter(user_id=request.user)
@@ -36,6 +39,7 @@ def home(request):
 
 @login_required
 def ticket_list_view(request):
+    """ Show the list of all the ticket created by the user. The ticket must be open/active. """
 
     ticket_objects = Ticket.objects.all()
 
@@ -51,6 +55,7 @@ def ticket_list_view(request):
 
 @login_required
 def review_list_view(request):
+    """ Show the list of all the published reviews """
 
     review_objects = Review.objects.all()
 
@@ -66,6 +71,7 @@ def review_list_view(request):
 
 @login_required
 def show_review(request, review_id):
+    """ Show the content of a selected review """
 
     review_object = Review.objects.get(id=review_id)
 
@@ -74,6 +80,7 @@ def show_review(request, review_id):
 
 @login_required
 def user_list(request):
+    """ Show a list of all the users """
 
     search_error = False
     try:
@@ -111,6 +118,7 @@ def user_list(request):
 
 @login_required
 def profile(request):
+    """ Show the profile of the current user. From here, he can change his password or update his description """
 
     user_name = request.user
 
@@ -126,6 +134,7 @@ def profile(request):
 
 @login_required
 def profile_tickets(request):
+    """ Show the tickets of the current user. He can modify/delete those that are not closed yet """
 
     guest_tickets = Ticket.objects.filter(user=request.user)
     reviews = [review for review in Review.objects.all() if review.ticket is not False]
@@ -145,7 +154,7 @@ def profile_tickets(request):
 
 @login_required
 def profile_reviews(request):
-
+    """ Show the reviews published by the current user. He can modify and delete them """
     guest_reviews = Review.objects.filter(user=request.user)
 
     context = {
@@ -162,6 +171,7 @@ def profile_reviews(request):
 
 @login_required
 def user_page(request, user_id):
+    """ Show the profile page of a given user. It shows the tickets he has open and his published review. """
 
     guest = get_object_or_404(User, id=user_id)
     tickets = Ticket.objects.filter(user=user_id)
@@ -193,6 +203,7 @@ def user_page(request, user_id):
 
 @login_required
 def create_ticket(request):
+    """ This is a form view that create a new ticket """
 
     ticket_form = forms.TicketCreationForm()
     if request.method == 'POST':
@@ -213,7 +224,7 @@ def create_ticket(request):
 
 @login_required
 def create_review(request):
-    """This is a review query which is not link to any ticket"""
+    """ This is a form view that publish a review that is not related to a ticket """
 
     review_form = forms.ReviewCreationForm()
 
@@ -239,7 +250,7 @@ def create_review(request):
 
 @login_required
 def review_from_ticket(request, ticket_id):
-    """This is a review query linked to a ticket"""
+    """ This is a form view that publish a review is response to a given ticket """
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
@@ -276,6 +287,7 @@ def review_from_ticket(request, ticket_id):
 
 @login_required
 def delete_ticket(request, ticket_id):
+    """ Check if the user is the author of the ticket, if it is the case it redirect the user to the delete confirmation page """
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
@@ -292,6 +304,7 @@ def delete_ticket(request, ticket_id):
 
 @login_required
 def confirm_deletion_ticket(request, ticket_id):
+    """ Delete the selected ticket if the user is the author of it """
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
@@ -304,6 +317,7 @@ def confirm_deletion_ticket(request, ticket_id):
 
 @login_required
 def modify_ticket(request, ticket_id):
+    """ Show a prefilled form that the user can modify in order to update his ticket """
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
     if not check_ownership(request, ticket):
@@ -322,6 +336,7 @@ def modify_ticket(request, ticket_id):
 
 @login_required
 def modify_review(request, review_id):
+    """ Show a prefilled form that the user can modify in order to update his review """
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -340,7 +355,7 @@ def modify_review(request, review_id):
 
 
 def check_ownership(request, object_ref):
-
+    """ Verify if the current user his the author of the selected object """
     if request.user == object_ref.user:
         return True
     return False
@@ -348,6 +363,7 @@ def check_ownership(request, object_ref):
 
 @login_required
 def delete_review(request, review_id):
+    """ Check if the user is the author of the review, if it is the case it redirect the user to the delete confirmation page """
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -364,6 +380,7 @@ def delete_review(request, review_id):
 
 @login_required
 def confirm_deletion_review(request, review_id):
+    """ Delete the selected review if the user is the author of it """
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -375,6 +392,7 @@ def confirm_deletion_review(request, review_id):
 
 @login_required
 def follow(request, user_id):
+    """ Create a follow relation between the current user and the selected one """
 
     user_object = User.objects.get(id=user_id)
     UserFollows.objects.create(user_id=request.user, followed_user_id=user_object)
@@ -384,6 +402,7 @@ def follow(request, user_id):
 
 @login_required
 def unfollow(request, user_id):
+    """ Delete the follow relation between the current user and the selected one """
 
     user_object = User.objects.get(id=user_id)
     relation = UserFollows.objects.get(user_id=request.user, followed_user_id=user_object)
@@ -394,6 +413,7 @@ def unfollow(request, user_id):
 
 @login_required
 def manage_subscriptions(request):
+    """ Show the subscriptions of the current user """
 
     followers = UserFollows.objects.filter(user_id=request.user.id)
     user_objects = []
@@ -405,6 +425,7 @@ def manage_subscriptions(request):
 
 @login_required
 def unfollow_from_manager(request, user_id):
+    """ Delete the follow relation between the current user and the selected one """
 
     user_object = User.objects.get(id=user_id)
     relation = UserFollows.objects.get(user_id=request.user, followed_user_id=user_object)
@@ -415,6 +436,8 @@ def unfollow_from_manager(request, user_id):
 
 @login_required
 def search_user(request):
+    """ Search in the database if the input correspond to a username, 
+    if it does, it redirect the  current user to the user page """
 
     researched_user = request.GET['fname']
     try:
@@ -426,6 +449,7 @@ def search_user(request):
 
 @login_required
 def add_description(request):
+    """ Show a prefilled form that the user can modify in order to update his description """
 
     user_object = User.objects.get(id=request.user.id)
 
@@ -442,6 +466,7 @@ def add_description(request):
 
 @login_required
 def show_authors(request):
+    """ Show a list of the books authors"""
 
     tickets = Ticket.objects.all()
     reviews = Review.objects.all()
@@ -456,6 +481,7 @@ def show_authors(request):
 
 @login_required
 def show_author_work(request, author_refererence):
+    """ Show a list of all the selected author's work """
 
     tickets = Ticket.objects.filter(content_author=author_refererence, status=True)
     reviews = Review.objects.filter(content_author=author_refererence)
