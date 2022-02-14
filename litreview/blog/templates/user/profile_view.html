@@ -4,24 +4,26 @@
 {% block content %}
 
 <h1> Profil de {{ user }} </h1>
-<h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
+<span class="badge rounded-pill bg-primary">{{ followers }} abonné{{ followers|pluralize:" ,s" }}</span>
+<span class="badge rounded-pill bg-secondary">{{ followings }} abonnement{{ followings|pluralize:" ,s"}}</span>
+<br><br>
 {% if user.description %}
-    <hr>
+    <hr><br>
     <p>
         {{ user.description }}
     </p>
 {% endif %}
 <hr><br><br>
 
-<a href="{% url 'profile-tickets' %}">Mes tickets</a>
+<a href="{% url 'profile-tickets' %}"><button type="button" class="btn btn-primary btn-sm">Mes Tickets</button></a>
 <br><br>
-<a href="{% url 'profile-reviews' %}">Mes critiques</a>
+<a href="{% url 'profile-reviews' %}"><button type="button" class="btn btn-primary btn-sm">Mes Critiques</button></a>
 <br><br>
-<a href="{% url 'subscription-management' %}">Gérer mes abonnements</a>
+<a href="{% url 'subscription-management' %}"><button type="button" class="btn btn-primary btn-sm">Gérer mes abonnements</button></a>
 <br><br>
-<a href="{% url 'description-modification' %}">Modification ma description</a>
+<a href="{% url 'description-modification' %}"><button type="button" class="btn btn-primary btn-sm">Modifier ma description</button></a>
 <br><br>
-<a href="{% url 'password_change' %}">Changer mon mots de passe</a>
+<a href="{% url 'password_change' %}"><button type="button" class="btn btn-primary btn-sm">Modifier mon mot de passe</button></a>
 <br><br>
 
 {% endblock %}

@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - Création {{ item_type }}{% endblock title %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 <h2>Créer {{ item_type }}</h2>
 <hr><br><br>
 
-<form method="post" enctype="multipart/form-data">
-    {{ form.as_p }}
+<form class="item-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <button class="publish" type="submit" >Publier</button>
+    {{ form|crispy }}
+    <br>
+    <button type="submit" class="btn btn-success">Publier</button>
 </form>
 
 {% endblock content %}

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - {{ ticket_id.content_reference }}{% endblock title %}
 {% load blog_extras %}
+{% load crispy_forms_tags %}
 {% block content %}
 
 <div class="reference">
@@ -19,10 +20,12 @@
 <p class="item-details">Ticket ouvert {% time_context ticket_id.time_created %} par <a href="{% url 'user-page' ticket_id.user.id %}">{{ ticket_id.user }}</a></p>
 
 <h2>Publier votre critique</h2>
-<form method="post">
-    {{ form.as_p }}
+<form class="item-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <button type="submit" >Publier</button>
+    {{ form|crispy }}
+    <br>
+    <button type="submit" class="btn btn-success">Publier la critique</button>
 </form>
+
 
 {% endblock %}

@@ -4,9 +4,12 @@
 {% block content %}
 
 <h1> Profil de {{ guest_id }} </h1>
-<h3> {{ followers }} abonné{{ followers|pluralize:" ,s" }} {{ followings }} abonnement{{ followings|pluralize:" ,s"}} </h3>
+<span class="badge rounded-pill bg-primary">{{ followers }} abonné{{ followers|pluralize:" ,s" }}</span>
+<span class="badge rounded-pill bg-secondary">{{ followings }} abonnement{{ followings|pluralize:" ,s"}}</span>
+<br>
 {% if guest_id.description %}
-    <hr>
+    <br>
+    <hr><br>
     <p>{{ guest_id.description }}</p>
 {% endif %}
 
@@ -14,11 +17,12 @@
 
 {% if action == 'follow' %}
     <form action='{{guest_id.id}}/{{action}}' method='GET'>
-    <button type='submit'> S'abonner </button>
+    <button type='submit' class="btn btn-success"> S'abonner </button>
+
     </form>
 {% elif action == 'unfollow' %}
     <form action='{{guest_id.id}}/{{action}}' method='GET'>
-    <button type='submit'> Se désabonner </button>
+        <button type='submit' class="btn btn-danger"> Se désabonner </button>
     </form>
 {% elif action == 'self' %}
 {% endif %}
@@ -50,7 +54,7 @@
 {% else %}
     <i> Je n'ai pas encore ouvert de ticket </i>
 {% endif %}
-<br>
+<br><br>
 </div>
 
 <h2>Mes critiques</h2>

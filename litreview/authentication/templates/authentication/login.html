@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - Connexion{% endblock title %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h2>Connexion</h2>
-    <form method="post">
-        {{ form.as_p }}
+    <br>
+    <form class="item-form" method="post">
         {% csrf_token %}
-        <button type="submit" >Se connecter</button>
+        {{ form|crispy }}
+        <br>
+        <button class="btn btn-success" type="submit" >Se connecter</button>
     </form>
     <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
 {% endblock content %}

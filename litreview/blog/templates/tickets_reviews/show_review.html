@@ -3,35 +3,33 @@
 {% load blog_extras %}
 {% block content %}
 
-
-<div class="item">
-    <div class="reference">
-        <h1>
+<div class="show-item card text-center">
+    <div class="card-header">
         {{ review.content_reference }}
-        {% add_paranthesis review.publication_year %}
-        </h1>
-        <h4>&nbsp;de <a href="{% url 'author-page' review.content_author %}">{{ review.content_author }}</a></h4>
+        {% add_paranthesis review.publication_year %}    
+        &nbsp;de <a href="{% url 'author-page' review.content_author %}">{{ review.content_author }}</a>
     </div>
-
-    <br><br>
-
     {% if review.content_picture %}
-        <img src="{{ review.content_picture.url }}" class="ticket-picture">
+        <img src="{{ review.content_picture.url }}" class="ticket-picture item">
     {% endif %}
-    <p class="item-details">Publiée {% time_context review.time_created %}</p>
-
-    <div class="users-infos">
-        <p><em>Notes :</em> {{ review.rating }}</p>
-        <p><em>Titre de la critique </em>: {{ review.headline }}</p>
-        <p><em>Auteur de la critique </em>:
-            <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
-        </p>
-        <p class="review-text">
-           {{ review.body }}
+    <div class="card-body">
+        <div class="card-header">
+            <h5 class="card-title">{{ review.headline }}</h5>
+        </div>
+      <p class="card-text">
+          <p><em>Notes :</em> {{ review.rating }}</p>
+          <p><em>Titre de la critique </em>: {{ review.headline }}</p>
+          <p><em>Auteur de la critique </em>:
+              <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
+          <div class="card-header">      
+                {{ review.body }}
+          </div>
+          </p>
         </p>
     </div>
-</div>
-
-
+    <div class="card-footer text-muted">
+        Publiée {% time_context review.time_created %}
+    </div>
+  </div>
 
 {% endblock %}
