@@ -29,7 +29,7 @@ def time_context(context, time_reference):
     minutes, seconds = divmod(remainder, 60)
 
     if days > 4:
-        return f'le {time_difference}'
+        return f'le {time_reference.strftime("%d/%m/%Y à %H:%M")}'
     elif days > 1:
         return f'Il y a {days} jours'
     elif days == 1:
