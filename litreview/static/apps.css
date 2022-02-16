@@ -79,7 +79,6 @@ em {
 
 a, a:visited {
     text-decoration: none;
-    color: blue;
 }
 
 a:hover {
@@ -146,3 +145,15 @@ hr {
 a.mute-link {
     text-decoration: none;
 }
+
+footer {
+    background-color: rgba(0, 0, 0, 0.05);      
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+body {
+    position: relative;
+}
+
