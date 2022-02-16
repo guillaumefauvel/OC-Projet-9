@@ -23,15 +23,15 @@
                 de <a href="{% url 'author-page' item.content_author %}">{{ item.content_author }}</a>
 
                 {% if item.status != True and item|model_type == 'Ticket' %}
-                    <a> - Ticket fermé -> </a>
+                    <span > - Ticket fermé -></span>
                     {% for review in review_list %}
                         {% if review.ticket.id == item.id %}
                             <a href="{% url 'show-review' review.id %}"> Critique </a>
                         {% endif %}
                     {% endfor %}
-                {% else %}
-                        <a href="{% url delete_item item.id %}" > Supprimer </a> |
-                        <a href="{% url modify_item item.id %}" > Modifier </a>
+                {% else %}&nbsp;&nbsp;                        
+                        <a class="mute-link" href="{% url modify_item item.id %}" > <button type="button" class="btn btn-primary btn-sm">Modifier</button> </a>
+                        <a class="mute-link" href="{% url delete_item item.id %}" > <button type="button" class="btn btn-danger btn-sm">Supprimer</button> </a>
                 {% endif %}
             </p>
             <br>
