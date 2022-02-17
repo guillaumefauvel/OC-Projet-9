@@ -6,6 +6,9 @@ from . import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator
+import os
+from os import listdir
+from os.path import isfile, join
 
 
 @login_required
@@ -41,7 +44,7 @@ def home(request):
 def ticket_list_view(request):
     """ Show the list of all the ticket created by the user. The ticket must be open/active. """
 
-    ticket_objects = Ticket.objects.all()
+    ticket_objects = Ticket.objects.filter(status=True)
 
     paginator = Paginator(ticket_objects, 8)
     page_number = request.GET.get('page')
@@ -309,6 +312,12 @@ def confirm_deletion_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
 
     if check_ownership(request, ticket):
+
+        try:
+            os.remove("media/"+str(ticket.content_picture))
+        except PermissionError:
+            pass
+
         ticket.delete()
         return redirect('profile-tickets')
 
@@ -385,8 +394,17 @@ def confirm_deletion_review(request, review_id):
     review = get_object_or_404(Review, id=review_id)
 
     if check_ownership(request, review):
+        try:
+            review.ticket.delete()
+        except AttributeError:
+            pass
+        try:
+            os.remove("media/"+str(review.content_picture))
+        except PermissionError:
+            pass
         review.delete()
         redirect('profile-reviews')
+        
     return redirect('home')
 
 

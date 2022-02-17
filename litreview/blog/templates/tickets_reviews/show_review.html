@@ -18,7 +18,6 @@
         </div>
       <p class="card-text">
           <p><em>Notes :</em> {{ review.rating }}</p>
-          <p><em>Titre de la critique </em>: {{ review.headline }}</p>
           <p><em>Auteur de la critique </em>:
               <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>
           <div class="card-header">      

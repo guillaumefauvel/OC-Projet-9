@@ -11,29 +11,28 @@
 <section class="content-list">
     {% if tickets_page_obj %}
         {% for ticket in tickets_page_obj %}
-            {% if ticket.status %}
-                <div class="card" style="width: 18rem;">
-                    {% if ticket.content_picture %}
-                        <img src="{{ ticket.content_picture.url }}" class="card-img-top" alt="...">
-                    {% endif %}
-                    <div class="card-body">
-                    <h5 class="card-title">
-                            {{ ticket.content_reference }}
-                            {% add_paranthesis ticket.publication_year %}
-                            <h6><a href="{% url 'author-page' ticket.content_author %}">{{ ticket.content_author }}</a></h6>
-                    </h5>
-                    <p class="card-text">{{ticket.user_comment}}</p>
-                    <div class="item-details">
-                        Ticket ouvert par <a href="{% url 'user-page' ticket.user.id %}">{{ ticket.user }}</a>
-                        {% time_context ticket.time_created %}
-                    </div>
-                    <a href="{% url 'ticket-page' ticket.id %}" class="btn btn-primary">Publier un critique</a>
-                    </div>
+            <div class="card" style="width: 18rem;">
+                {% if ticket.content_picture %}
+                    <img src="{{ ticket.content_picture.url }}" class="card-img-top" alt="...">
+                {% endif %}
+                <div class="card-body">
+                <h5 class="card-title">
+                        {{ ticket.content_reference }}
+                        {% add_paranthesis ticket.publication_year %}
+                        <h6><a href="{% url 'author-page' ticket.content_author %}">{{ ticket.content_author }}</a></h6>
+                </h5>
+                <p class="card-text">{{ticket.user_comment}}</p>
+                <div class="item-details">
+                    Ticket ouvert par <a href="{% url 'user-page' ticket.user.id %}">{{ ticket.user }}</a>
+                    {% time_context ticket.time_created %}
                 </div>
-                <br>
-            {% endif %}
+                <a href="{% url 'ticket-page' ticket.id %}" class="btn btn-primary">Publier un critique</a>
+                </div>
+            </div>
+            <br>
         {% endfor %}
-    
+
+        
 {% include 'partials/blog_snippet.html' with page_obj=tickets_page_obj %}
 {% else %}
     <p> Il n'y pas de ticket ouvert.</p>

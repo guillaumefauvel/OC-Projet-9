@@ -15,7 +15,7 @@
                     <img src="{{ review.content_picture.url }}" class="card-img-top" alt="...">
                 {% endif %}
                 <div class="card-body">
-                <h5 class="card-title">{{ review.content_reference }}{% add_paranthesis review.publication_year %}</h5>
+                <h5 class="card-title">{{ review.content_reference }}&nbsp;{% add_paranthesis review.publication_year %}</h5>
                 <p class="card-text"><h6><a href="{% url 'author-page' review.content_author %}">{{ review.content_author }}</a></h6></p>
                 <div class="item-details">
                     <p>Publié par <a href="{% url 'user-page' review.user.id %}">{{ review.user }}</a>

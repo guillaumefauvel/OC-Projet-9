@@ -16,8 +16,7 @@
             {% endif %}
             <div class="card-body">
             <h5 class="card-title">
-                {{ item.content_reference }}{% add_paranthesis item.publication_year %}
-                <br>
+                {{ item.content_reference }}&nbsp;{% add_paranthesis item.publication_year %}
                 <em><a href="{% url 'author-page' item.content_author %}">{{ item.content_author }}</a></em>
             </h5>
             {% if item|model_type == 'Review' %}

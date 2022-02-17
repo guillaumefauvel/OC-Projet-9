@@ -11,7 +11,7 @@ class Ticket(models.Model):
     content_picture = models.ImageField(verbose_name='Image', upload_to='ticket', blank=True, null=True)
     publication_year = models.IntegerField(verbose_name='Date de publication',
                                            validators=[MinValueValidator(-400),
-                                                       MaxValueValidator(datetime.date.today().year+1)],
+                                                       MaxValueValidator(datetime.date.today().year)],
                                            blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     user_comment = models.TextField(verbose_name='Commentaire', max_length=300)
@@ -41,7 +41,7 @@ class Review(models.Model):
     content_picture = models.ImageField(verbose_name='Image', upload_to='ticket', blank=True, null=True)
     publication_year = models.IntegerField(verbose_name='Date de publication',
                                            validators=[MinValueValidator(-400),
-                                                       MaxValueValidator(datetime.date.today().year+1)],
+                                                       MaxValueValidator(datetime.date.today().year)],
                                            blank=True, null=True)
 
     def __str__(self):
