@@ -441,7 +441,7 @@ def search_user(request):
 
     researched_user = request.GET['fname']
     try:
-        researched_user = User.objects.get(username=researched_user)
+        researched_user = User.objects.get(username__iexact=researched_user)
     except ObjectDoesNotExist:
         return user_list(request)
     return redirect('user-page', researched_user.id)
