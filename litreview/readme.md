@@ -6,11 +6,12 @@ Chaque utilisateur possède le droit de publier une critique ou d'ouvrir un nouv
 Il peut également répondre à un ticket en publiant sa propre critique. Une fois qu'une critique a été publiée en réponse 
 à un ticket, ce dernier est clôturé et ne figure plus sur la page 'Tickets ouverts'.
 Grâce à un système d'abonnement, l'utilisateur peut suivre les activités d'utilisateurs sélectionnés. Il peut ainsi
-être tenu au courant des récentes publications dans son flux. Notes que le flux d'un utilisateur est également rempli de ses
+être tenu au courant des récentes publications dans son flux. Notez que le flux d'un utilisateur est également rempli de ses
 propres publications. L'utilisateur peut effectuer toutes les opérations CRUD sur ses publications, sauf sur ses tickets fermés.
 
 
 ### Lancement de l'application :
+
 Afin de lancer le programme, assurez-vous d'avoir préalablement créé et activé un environnement virtuel. Installez-les 
 requirements à l'aide d'un `pip install requirements.txt`. Activez le serveur en entrant `python manage.py runserver` 
 dans le dossier source, le repository `litreview`. Le serveur est maintenant en ligne, cliquer sur le lien affiché dans

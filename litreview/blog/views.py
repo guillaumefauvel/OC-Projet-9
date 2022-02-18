@@ -7,8 +7,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator
 import os
-from os import listdir
-from os.path import isfile, join
 
 
 @login_required
@@ -81,127 +79,6 @@ def show_review(request, review_id):
     return render(request, 'tickets_reviews/show_review.html', context={'review': review_object})
 
 
-@login_required
-def user_list(request):
-    """ Show a list of all the users """
-
-    search_error = False
-    try:
-        if request.GET['fname']:
-            pass
-        search_error = True
-    except MultiValueDictKeyError:
-        pass
-
-    user_infos = {}
-    for author in User.objects.all():
-        user_infos[author.id] = {
-            'user_object': author,
-            'ticket_number': len(Ticket.objects.filter(user=author)),
-            'review_number': len(Review.objects.filter(user=author)),
-            'follower_number': len(UserFollows.objects.filter(followed_user_id=author)),
-            'following_number': len(UserFollows.objects.filter(user_id=author)),
-        }
-
-    user_infos = sorted(user_infos.items(), key=lambda x: str(x[1]['user_object']), reverse=True)
-
-    paginator = Paginator(user_infos, 6)
-    page_number = request.GET.get('page')
-    users_page_object = paginator.get_page(page_number)
-
-    # print(user_infos[0][1]['user_object'])
-
-    context = {
-        'search_error': search_error,
-        'users_page_object': users_page_object,
-    }
-
-    return render(request, "user/user_list.html", context)
-
-
-@login_required
-def profile(request):
-    """ Show the profile of the current user. From here, he can change his password or update his description """
-
-    user_name = request.user
-
-    followings_number = len(UserFollows.objects.filter(user_id=user_name))
-    followers_number = len(UserFollows.objects.filter(followed_user_id=user_name))
-
-    context = {'user_name': user_name,
-               'followings': followings_number,
-               'followers': followers_number}
-
-    return render(request, 'user/profile_view.html', context=context)
-
-
-@login_required
-def profile_tickets(request):
-    """ Show the tickets of the current user. He can modify/delete those that are not closed yet """
-
-    guest_tickets = Ticket.objects.filter(user=request.user)
-    reviews = [review for review in Review.objects.all() if review.ticket is not False]
-
-    context = {
-        'item_list': guest_tickets,
-        'review_list': reviews,
-        'heading_one': 'Tickets ouverts',
-        'empty_message': 'Je n\'ai pas encore ouvert de ticket',
-        'page_ref': 'ticket-page',
-        'delete_item': 'delete-ticket',
-        'modify_item': 'modify-ticket',
-    }
-
-    return render(request, 'user/profile_list.html', context=context)
-
-
-@login_required
-def profile_reviews(request):
-    """ Show the reviews published by the current user. He can modify and delete them """
-    guest_reviews = Review.objects.filter(user=request.user)
-
-    context = {
-        'item_list': guest_reviews,
-        'heading_one': 'Critiques publiées',
-        'empty_message': 'Vous n\'avez pas encore publié de critique',
-        'page_ref': 'show-review',
-        'delete_item': 'delete-review',
-        'modify_item': 'modify-review',
-    }
-
-    return render(request, 'user/profile_list.html', context=context)
-
-
-@login_required
-def user_page(request, user_id):
-    """ Show the profile page of a given user. It shows the tickets he has open and his published review. """
-
-    guest = get_object_or_404(User, id=user_id)
-    tickets = Ticket.objects.filter(user=user_id)
-    reviews = Review.objects.filter(user=user_id)
-
-    try:
-        relation = UserFollows.objects.get(user_id=request.user, followed_user_id=guest)
-        action = 'unfollow'
-    except ObjectDoesNotExist:
-        if guest.id != request.user.id:
-            action = 'follow'
-        else:
-            action = 'self'
-
-    followings_number = len(UserFollows.objects.filter(user_id=guest))
-    followers_number = len(UserFollows.objects.filter(followed_user_id=guest))
-
-    return render(request, 'user/user_page.html', context={
-        'guest_id': guest,
-        'tickets': tickets,
-        'reviews': reviews,
-        'foreign_reviews': Review.objects.all(),
-        'page_ref': 'ticket-page',
-        'action': action,
-        'followings': followings_number,
-        'followers': followers_number,
-    })
 
 
 @login_required
@@ -286,6 +163,128 @@ def review_from_ticket(request, ticket_id):
             return redirect('home')
 
     return render(request, 'tickets_reviews/ticket_page.html', context={'ticket_id': ticket, 'form': review_form})
+
+@login_required
+def user_list(request):
+    """ Show a list of all the users """
+
+    search_error = False
+    try:
+        if request.GET['fname']:
+            pass
+        search_error = True
+    except MultiValueDictKeyError:
+        pass
+
+    user_infos = {}
+    for author in User.objects.all():
+        user_infos[author.id] = {
+            'user_object': author,
+            'ticket_number': len(Ticket.objects.filter(user=author)),
+            'review_number': len(Review.objects.filter(user=author)),
+            'follower_number': len(UserFollows.objects.filter(followed_user_id=author)),
+            'following_number': len(UserFollows.objects.filter(user_id=author)),
+        }
+
+    user_infos = sorted(user_infos.items(), key=lambda x: str(x[1]['user_object']), reverse=True)
+
+    paginator = Paginator(user_infos, 6)
+    page_number = request.GET.get('page')
+    users_page_object = paginator.get_page(page_number)
+
+    # print(user_infos[0][1]['user_object'])
+
+    context = {
+        'search_error': search_error,
+        'users_page_object': users_page_object,
+    }
+
+    return render(request, "user/user_list.html", context)
+
+
+@login_required
+def profile(request):
+    """ Show the profile of the current user. From here, he can change his password or update his description """
+
+    user_name = request.user
+
+    followings_number = len(UserFollows.objects.filter(user_id=user_name))
+    followers_number = len(UserFollows.objects.filter(followed_user_id=user_name))
+
+    context = {'user_name': user_name,
+               'followings': followings_number,
+               'followers': followers_number}
+
+    return render(request, 'user/profile_view.html', context=context)
+
+
+@login_required
+def profile_tickets(request):
+    """ Show the tickets of the current user. He can modify/delete those that are not closed yet """
+
+    guest_tickets = Ticket.objects.filter(user=request.user)
+    reviews = [review for review in Review.objects.all() if review.ticket is not False]
+
+    context = {
+        'item_list': guest_tickets,
+        'review_list': reviews,
+        'heading_one': 'Tickets',
+        'empty_message': 'Je n\'ai pas encore ouvert de ticket',
+        'page_ref': 'ticket-page',
+        'delete_item': 'delete-ticket',
+        'modify_item': 'modify-ticket',
+    }
+
+    return render(request, 'user/profile_list.html', context=context)
+
+
+@login_required
+def profile_reviews(request):
+    """ Show the reviews published by the current user. He can modify and delete them """
+    guest_reviews = Review.objects.filter(user=request.user)
+
+    context = {
+        'item_list': guest_reviews,
+        'heading_one': 'Critiques publiées',
+        'empty_message': 'Vous n\'avez pas encore publié de critique',
+        'page_ref': 'show-review',
+        'delete_item': 'delete-review',
+        'modify_item': 'modify-review',
+    }
+
+    return render(request, 'user/profile_list.html', context=context)
+
+
+@login_required
+def user_page(request, user_id):
+    """ Show the profile page of a given user. It shows the tickets he has open and his published review. """
+
+    guest = get_object_or_404(User, id=user_id)
+    tickets = Ticket.objects.filter(user=user_id)
+    reviews = Review.objects.filter(user=user_id)
+
+    try:
+        relation = UserFollows.objects.get(user_id=request.user, followed_user_id=guest)
+        action = 'unfollow'
+    except ObjectDoesNotExist:
+        if guest.id != request.user.id:
+            action = 'follow'
+        else:
+            action = 'self'
+
+    followings_number = len(UserFollows.objects.filter(user_id=guest))
+    followers_number = len(UserFollows.objects.filter(followed_user_id=guest))
+
+    return render(request, 'user/user_page.html', context={
+        'guest_id': guest,
+        'tickets': tickets,
+        'reviews': reviews,
+        'foreign_reviews': Review.objects.all(),
+        'page_ref': 'ticket-page',
+        'action': action,
+        'followings': followings_number,
+        'followers': followers_number,
+    })
 
 
 @login_required
@@ -404,7 +403,7 @@ def confirm_deletion_review(request, review_id):
             pass
         review.delete()
         redirect('profile-reviews')
-        
+
     return redirect('home')
 
 

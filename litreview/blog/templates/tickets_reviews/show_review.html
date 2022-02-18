@@ -25,6 +25,10 @@
           </div>
           </p>
         </p>
+        {% if user == review.user %}
+            <a class="mute-link" href="{% url 'modify-review' review.id %}" > <button type="button" class="btn btn-primary btn-sm">Modifier</button> </a>
+            <a class="mute-link" href="{% url 'delete-review' review.id %}" > <button type="button" class="btn btn-danger btn-sm">Supprimer</button> </a>
+        {% endif %}
     </div>
     <div class="card-footer text-muted">
         Publiée {% time_context review.time_created %}

@@ -25,6 +25,12 @@
 </div>
 <br>
 
+{% if user == ticket_id.user %}
+    <a class="mute-link" href="{% url 'modify-ticket' ticket_id.id %}" > <button type="button" class="btn btn-primary btn-sm">Modifier</button> </a>
+    <a class="mute-link" href="{% url 'delete-ticket' ticket_id.id %}" > <button type="button" class="btn btn-danger btn-sm">Supprimer</button> </a>
+    <br><br>
+{% endif %}
+
 <h2>Publier votre critique</h2>
 <form class="item-form" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -32,6 +38,5 @@
     <br>
     <button type="submit" class="btn btn-success">Publier la critique</button>
 </form>
-
 
 {% endblock %}
