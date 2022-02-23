@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}LitReview - Mise à jour {{ heading }}{% endblock title %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 <h2>Mise à jour {{ heading }}</h2>
 <hr><br><br>
 
-<form action="" method="post">
+<form class="item-form" action="" method="post">
   {% csrf_token %}
-  {{ form.as_p }}
+  {{ form|crispy }}
+  <br>
   <input class="btn btn-success btn-sm" type="submit" value="Mettre à jour">
 </form>
 
